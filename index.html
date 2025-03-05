@@ -41,6 +41,23 @@
             background: linear-gradient(135deg, rgba(46, 139, 87, 0.9) 0%, rgba(106, 90, 205, 0.8) 100%);
         }
 
+        /* התאמות למובייל */
+        @media (max-width: 640px) {
+            #home {
+                min-height: auto !important;
+                display: block;
+                padding-bottom: 120px; /* מרווח גדול יותר בתחתית */
+            }
+            
+            .scroll-hint {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 50;
+            }
+        }
+
         .animate-float {
             animation: floating 6s ease-in-out infinite;
         }
@@ -196,6 +213,113 @@
         .file-upload-button:hover {
             background-color: rgba(255, 255, 255, 0.25);
         }
+        
+        .scroll-hint a {
+            backdrop-filter: blur(4px);
+        }
+        
+        @keyframes subtle-arrow {
+            0% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(4px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+        }
+
+        .scroll-arrow {
+            animation: subtle-arrow 2s infinite ease-in-out;
+        }
+
+        .modern-scroll-btn {
+            background: linear-gradient(225deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.1),
+                0 1px 2px rgba(255,255,255,0.1) inset,
+                0 -1px 2px rgba(0,0,0,0.2) inset;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .modern-scroll-btn:hover {
+            background: linear-gradient(225deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(0,0,0,0.15),
+                0 1px 3px rgba(255,255,255,0.2) inset,
+                0 -1px 2px rgba(0,0,0,0.1) inset;
+        }
+        
+        /* עיצוב חדש לחלוטין לכפתור גלילה */
+        .scroll-down-circle {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .circle-inner {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            color: white;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        
+        .circle-pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            z-index: 1;
+            animation: pulse-animation 3s infinite ease-in-out;
+        }
+        
+        @keyframes pulse-animation {
+            0% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+        }
+        
+        .scroll-down-circle:hover .circle-inner {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .scroll-down-circle i {
+            animation: subtle-bounce 2s infinite ease-in-out;
+        }
+        
+        @keyframes subtle-bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(3px);
+            }
+        }
     </style>
 </head>
 <body class="bg-light text-dark">
@@ -241,66 +365,68 @@
     </nav>
 
     <!-- סקציית בית - Hero Section -->
-    <section id="home" class="pt-28 pb-20 md:pt-40 md:pb-32 hero-gradient text-white relative overflow-hidden animate-on-scroll" data-animation-type="fade-in">
+    <section id="home" class="pt-16 pb-10 md:pt-40 md:pb-32 hero-gradient text-white relative overflow-hidden animate-on-scroll" data-animation-type="fade-in">
         <div class="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1536819114556-29194dcaad36?ixlib=rb-4.0.3')] bg-cover bg-center opacity-20"></div>
         
         <!-- מכולה לעלים נופלים -->
         <div id="leavesContainer" class="absolute top-0 left-0 w-full h-full overflow-hidden z-0"></div>
         
         <!-- עיטורים מרחפים -->
-        <div class="absolute top-1/4 left-10 w-24 h-24 bg-white/10 rounded-full blur-xl animate-float"></div>
-        <div class="absolute bottom-1/4 right-10 w-32 h-32 bg-secondary/20 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
-        <div class="absolute top-2/3 left-1/3 w-16 h-16 bg-tertiary/20 rounded-full blur-xl animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/4 left-10 w-16 h-16 md:w-24 md:h-24 bg-white/10 rounded-full blur-xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-10 w-20 h-20 md:w-32 md:h-32 bg-secondary/20 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-2/3 left-1/3 w-12 h-12 md:w-16 md:h-16 bg-tertiary/20 rounded-full blur-xl animate-float" style="animation-delay: 1s;"></div>
         
         <div class="container mx-auto px-4 relative z-10">
-            <div class="grid md:grid-cols-2 gap-10 items-center">
+            <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
                 <div class="order-2 md:order-1 animate-on-scroll" data-animation-type="fade-in-right">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight">
                         <span class="block text-secondary">פרידום מדיקל</span>
                         המרכז הישראלי לקאנביס 
                     </h1>
-                    <p class="text-xl md:text-2xl mb-8 text-white/90">איכות של חיים, זה המשמעות שלנו</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#services" class="bg-white text-primary px-8 py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover">
+                    <p class="text-lg md:text-2xl mb-4 md:mb-8 text-white/90 leading-relaxed">איכות של חיים, זה המשמעות שלנו</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="#services" class="bg-white text-primary px-5 py-2 md:px-8 md:py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover text-sm md:text-base">
                             <i class="fas fa-leaf ml-2"></i>הרישיון שלך מחכה לך
                         </a>
-                        <a href="https://wa.me/972559835789" target="_blank" rel="noopener noreferrer" class="bg-secondary text-white px-8 py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover">
+                        <a href="https://wa.me/972559835789" target="_blank" rel="noopener noreferrer" class="bg-secondary text-white px-5 py-2 md:px-8 md:py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover text-sm md:text-base">
                             <i class="fab fa-whatsapp ml-2"></i>דבר איתנו עכשיו
                         </a>
                     </div>
                     
-                    <div class="mt-12 flex items-center gap-6 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
-                        <div class="flex -space-x-4 rtl:space-x-reverse">
-                            <img class="w-10 h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80" alt="משתמש">
-                            <img class="w-10 h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80" alt="משתמש">
-                            <img class="w-10 h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80" alt="משתמש">
+                    <div class="mt-6 md:mt-12 flex items-center gap-3 md:gap-6 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
+                        <div class="flex -space-x-3 md:-space-x-4 rtl:space-x-reverse">
+                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80" alt="משתמש">
+                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80" alt="משתמש">
+                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80" alt="משתמש">
                         </div>
                         <div>
-                            <p class="font-medium"><i class="fas fa-check-circle text-secondary ml-1"></i> למעלה מ-<span class="number-animate">1000</span> מטופלים מרוצים</p>
+                            <p class="font-medium text-sm md:text-base"><i class="fas fa-check-circle text-secondary ml-1"></i> למעלה מ-<span class="number-animate">1000</span> מטופלים מרוצים</p>
                             <div class="flex mt-1">
-                                <i class="fas fa-star text-secondary"></i>
-                                <i class="fas fa-star text-secondary"></i>
-                                <i class="fas fa-star text-secondary"></i>
-                                <i class="fas fa-star text-secondary"></i>
-                                <i class="fas fa-star text-secondary"></i>
-                                <span class="mr-2 font-medium">5.0</span>
+                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
+                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
+                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
+                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
+                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
+                                <span class="mr-2 font-medium text-sm md:text-base">5.0</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="order-1 md:order-2 flex justify-center animate-on-scroll" data-animation-type="fade-in-left">
                     <div class="relative">
-                        <div class="w-64 h-64 md:w-80 md:h-80 bg-tertiary/20 rounded-full absolute -top-6 -right-6 blur-md"></div>
-                        <img src="https://i.ibb.co/ynhMr6bs/9693bc10-162c-40d9-bc17-445ce64100df-removebg-preview.png" alt="לוגו פרידום מדיקל" class="w-full max-w-md relative z-10 animate-float" id="mainLogo">
+                        <div class="w-48 h-48 md:w-80 md:h-80 bg-tertiary/20 rounded-full absolute -top-6 -right-6 blur-md"></div>
+                        <img src="https://i.ibb.co/ynhMr6bs/9693bc10-162c-40d9-bc17-445ce64100df-removebg-preview.png" alt="לוגו פרידום מדיקל" class="w-full max-w-[200px] md:max-w-md relative z-10 animate-float" id="mainLogo">
                     </div>
                 </div>
             </div>
             
             <!-- גלילה לשירותים -->
-            <div class="flex justify-center mt-20 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="600">
-                <a href="#services" class="text-white/90 hover:text-white flex flex-col items-center animate-bounce">
-                    <span>גלול למטה</span>
-                    <i class="fas fa-chevron-down mt-2 text-xl"></i>
+            <div class="flex justify-center mt-8 md:mt-16 lg:mt-20 animate-on-scroll scroll-hint" data-animation-type="fade-in-up" data-animation-delay="600">
+                <a href="#services" class="scroll-down-circle group">
+                    <div class="circle-pulse"></div>
+                    <div class="circle-inner flex items-center justify-center">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
                 </a>
             </div>
         </div>
