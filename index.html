@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טופס לקוח - לילך אביאני</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Heebo', sans-serif;
+        }
+
+        body {
+            background-image: url('images/WhatsApp Image 2025-12-07 at 12.38.50_5eca94fe.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0;
+        }
+
+        #app {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        input,
+        select,
+        textarea {
+            font-size: 18px !important;
+            padding: 16px !important;
+        }
+
+        label {
+            font-size: 20px !important;
+            font-weight: 600 !important;
+        }
+
+        .file-preview {
+            font-size: 16px;
+            padding: 12px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .file-instruction {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .error-message {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-6">
+
+    <div id="app" class="max-w-2xl mx-auto">
+
+        <!-- Header -->
+        <div class="glass rounded-3xl p-6 md:p-8 mb-6 text-center shadow-2xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-3">לילך אביאני</h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-4 leading-relaxed">פירוק חברה חדלות פירעון והסדר נושאים</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 text-lg text-gray-600">
+                <div class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                        </path>
+                    </svg>
+                    <span class="font-semibold">054-319-5621</span>
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    <span class="font-semibold">lilach.aviani@gmail.com</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="glass rounded-2xl p-5 mb-6 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-xl font-bold text-gray-700">שלב <span id="currentStep">1</span> מתוך <span
+                        id="totalSteps">4</span></span>
+                <span class="text-xl font-bold text-blue-600"><span id="progressPercent">0</span>%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div id="progressBar"
+                    class="bg-gradient-to-r from-blue-500 to-purple-500 h-4 rounded-full transition-all duration-500"
+                    style="width: 0%"></div>
+            </div>
+            <p id="stepTitle" class="text-center mt-3 text-lg font-semibold text-gray-600"></p>
+        </div>
+
+        <form id="mainForm">
+
+            <!-- ========== שלב 1: פרטי החייב ========== -->
+            <div class="step-container active" data-step="1">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        פרטי החייב
+                    </h2>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label for="fullName" class="block text-gray-800 mb-2">שם מלא *</label>
+                            <input type="text" id="fullName" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="idNumber" class="block text-gray-800 mb-2">תעודת זהות (9 ספרות) *</label>
+                            <input type="text" id="idNumber" required maxlength="9" pattern="[0-9]{9}"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">יש להזין 9 ספרות בלבד</p>
+                        </div>
+
+                        <div>
+                            <label for="birthDate" class="block text-gray-800 mb-2">תאריך לידה *</label>
+                            <input type="date" id="birthDate" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-gray-800 mb-2">טלפון נייד *</label>
+                            <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10"
+                                placeholder="לדוגמה: 0501234567"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">יש להזין 10 ספרות (עם 0)</p>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-gray-800 mb-2">כתובת מייל *</label>
+                            <input type="email" id="email" required placeholder="example@gmail.com"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="maritalStatus" class="block text-gray-800 mb-2">סטטוס אישי *</label>
+                            <select id="maritalStatus" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                <option value="">בחר סטטוס</option>
+                                <option value="נשוי">נשוי/נשואה</option>
+                                <option value="גרוש">גרוש/גרושה</option>
+                                <option value="רווק">רווק/רווקה</option>
+                                <option value="פרוד">פרוד/פרודה</option>
+                                <option value="אלמן">אלמן/אלמנה</option>
+                            </select>
+                        </div>
+
+                        <div id="spouseBirthdateContainer" class="hidden">
+                            <label for="spouseBirthdate" class="block text-gray-800 mb-2">תאריך לידה של בת/בן הזוג
+                                *</label>
+                            <input type="date" id="spouseBirthdate"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div id="divorceYearContainer" class="hidden">
+                            <label for="divorceYear" class="block text-gray-800 mb-2">שנת גירושין *</label>
+                            <input type="number" id="divorceYear" min="1950" max="2025" placeholder="לדוגמה: 2020"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="totalChildren" class="block text-gray-800 mb-2">כמה ילדים יש לך בסה"כ? *</label>
+                            <input type="number" id="totalChildren" required min="0" placeholder="0"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="childrenUnder20" class="block text-gray-800 mb-2">כמה מהם מתחת לגיל 20?
+                                *</label>
+                            <input type="number" id="childrenUnder20" required min="0" placeholder="0"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <!-- קבצים שלב 1 -->
+                        <div class="border-4 border-dashed border-blue-300 rounded-2xl p-6 bg-blue-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: צילום תעודת זהות עם כל הספח פתוח
+                            </div>
+                            <label for="idFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת צילום ת"ז
+                                *</label>
+                            <input type="file" id="idFiles" multiple accept="image/*,application/pdf" class="hidden"
+                                required>
+                            <button type="button" onclick="document.getElementById('idFiles').click()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <p class="text-gray-600 mt-3 text-base text-center">ניתן לבחור מספר קבצים (תמונות או PDF)
+                            </p>
+                            <div id="idFilesPreview" class="mt-3"></div>
+                        </div>
+
+                        <div id="divorceCertContainer"
+                            class="hidden border-4 border-dashed border-orange-300 rounded-2xl p-6 bg-orange-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: תעודת גירושין
+                            </div>
+                            <label for="divorceCertFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת תעודת
+                                גירושין *</label>
+                            <input type="file" id="divorceCertFiles" multiple accept="image/*,application/pdf"
+                                class="hidden">
+                            <button type="button" onclick="document.getElementById('divorceCertFiles').click()"
+                                class="bg-orange-600 hover:bg-orange-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <div id="divorceCertFilesPreview" class="mt-3"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== שלב 2: מגורים + תעסוקה ========== -->
+            <div class="step-container" data-step="2">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        מגורים ותעסוקה
+                    </h2>
+
+                    <div class="space-y-6">
+                        <!-- מגורים -->
+                        <h3 class="text-2xl font-bold text-purple-600 border-b-2 border-purple-300 pb-2">🏠 מגורים</h3>
+
+                        <div>
+                            <label for="residenceType" class="block text-gray-800 mb-2">היכן אתה מתגורר? *</label>
+                            <select id="residenceType" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                <option value="">בחר סוג מגורים</option>
+                                <option value="שכירות">שכירות</option>
+                                <option value="דירה בבעלות">דירה בבעלות</option>
+                                <option value="עם הורים או משפחה">עם הורים או בני משפחה</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="address" class="block text-gray-800 mb-2">כתובת מגורים *</label>
+                            <input type="text" id="address" required placeholder="רחוב, מספר בית, עיר"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="rooms" class="block text-gray-800 mb-2">כמה חדרים יש בדירה? *</label>
+                            <input type="number" id="rooms" required min="1" max="20" placeholder="לדוגמה: 3"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div id="rentContainer" class="hidden">
+                            <label for="rentAmount" class="block text-gray-800 mb-2">כמה משלם שכירות? (בשקלים) *</label>
+                            <input type="number" id="rentAmount" min="0" placeholder="לדוגמה: 3500"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">סכום חודשי</p>
+                        </div>
+
+                        <div id="mortgageContainer" class="hidden">
+                            <label for="mortgageAmount" class="block text-gray-800 mb-2">כמה משלם משכנתא? (בשקלים)
+                                *</label>
+                            <input type="number" id="mortgageAmount" min="0" placeholder="לדוגמה: 4200"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">סכום חודשי</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם נולדת בארץ? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="bornInIsrael" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="bornInIsrael" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="immigrationContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="immigrationCountry" class="block text-gray-800 mb-2">מאיפה עלית? *</label>
+                                <input type="text" id="immigrationCountry" placeholder="שם המדינה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="immigrationYear" class="block text-gray-800 mb-2">שנת עלייה *</label>
+                                <input type="number" id="immigrationYear" min="1900" max="2025"
+                                    placeholder="לדוגמה: 1995"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                        </div>
+
+                        <div class="border-4 border-dashed border-purple-300 rounded-2xl p-6 bg-purple-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: הסכם שכירות עדכני (אם רלוונטי)
+                            </div>
+                            <label for="rentContractFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת הסכם
+                                שכירות</label>
+                            <input type="file" id="rentContractFiles" multiple accept="image/*,application/pdf"
+                                class="hidden">
+                            <button type="button" onclick="document.getElementById('rentContractFiles').click()"
+                                class="bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <div id="rentContractFilesPreview" class="mt-3"></div>
+                        </div>
+
+                        <!-- תעסוקה - החייב -->
+                        <h3 class="text-2xl font-bold text-green-600 border-b-2 border-green-300 pb-2 mt-8">💼 תעסוקה -
+                            שלך</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם אתה עובד? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-green-50 transition flex-1">
+                                    <input type="radio" name="employed" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-green-50 transition flex-1">
+                                    <input type="radio" name="employed" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="employmentContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="companyName" class="block text-gray-800 mb-2">שם החברה *</label>
+                                <input type="text" id="companyName" placeholder="שם החברה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="jobTitle" class="block text-gray-800 mb-2">מה התפקיד שלך? *</label>
+                                <input type="text" id="jobTitle" placeholder="תפקיד"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="jobStartDate" class="block text-gray-800 mb-2">תאריך תחילת עבודה *</label>
+                                <input type="date" id="jobStartDate"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="netSalary" class="block text-gray-800 mb-2">כמה אתה מרוויח נטו? (בשקלים)
+                                *</label>
+                            <input type="number" id="netSalary" required min="0" placeholder="לדוגמה: 8000"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <!-- תעסוקה - בן/בת זוג -->
+                        <div id="spouseEmploymentSection" class="hidden">
+                            <h3 class="text-2xl font-bold text-pink-600 border-b-2 border-pink-300 pb-2 mt-8">💼 תעסוקה
+                                - בן/בת הזוג</h3>
+
+                            <div class="mt-4">
+                                <label class="block text-gray-800 mb-3">האם בן/בת הזוג עובד/ת? *</label>
+                                <div class="flex gap-4">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-pink-50 transition flex-1">
+                                        <input type="radio" name="spouseEmployed" value="כן" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">כן</span>
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-pink-50 transition flex-1">
+                                        <input type="radio" name="spouseEmployed" value="לא" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">לא</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="spouseEmploymentContainer" class="hidden space-y-4 mt-4">
+                                <div>
+                                    <label for="spouseCompanyName" class="block text-gray-800 mb-2">שם החברה *</label>
+                                    <input type="text" id="spouseCompanyName" placeholder="שם החברה"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                                <div>
+                                    <label for="spouseJobTitle" class="block text-gray-800 mb-2">מה התפקיד? *</label>
+                                    <input type="text" id="spouseJobTitle" placeholder="תפקיד"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                                <div>
+                                    <label for="spouseJobStartDate" class="block text-gray-800 mb-2">תאריך תחילת עבודה
+                                        *</label>
+                                    <input type="date" id="spouseJobStartDate"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="spouseNetSalary" class="block text-gray-800 mb-2">כמה מרוויח/ה נטו? (בשקלים)
+                                    *</label>
+                                <input type="number" id="spouseNetSalary" min="0" placeholder="לדוגמה: 7000"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                        </div>
+
+                        <!-- תלושי שכר -->
+                        <div class="border-4 border-dashed border-green-300 rounded-2xl p-6 bg-green-50 mt-6">
+                            <div class="file-instruction">
+                                📄 יש להעלות: 3 תלושי שכר אחרונים שלך
+                                <span id="spouseSalaryInstruction" class="hidden"> + תלושי שכר של בן/בת הזוג</span>
+                            </div>
+                            <label for="salarySlipsFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת תלושי
+                                שכר *</label>
+                            <input type="file" id="salarySlipsFiles" multiple accept="image/*,application/pdf"
+                                class="hidden" required>
+                            <button type="button" onclick="document.getElementById('salarySlipsFiles').click()"
+                                class="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <p class="text-gray-600 mt-3 text-base text-center">ניתן לבחור מספר קבצים (3+ תלושים)</p>
+                            <div id="salarySlipsFilesPreview" class="mt-3"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== שלב 3: הכנסות + השכלה + רכב + בנק ========== -->
+            <div class="step-container" data-step="3">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4"></path>
+                            <path d="M12 8h.01"></path>
+                        </svg>
+                        פרטים נוספים
+                    </h2>
+
+                    <div class="space-y-6">
+                        <!-- הכנסות נוספות -->
+                        <h3 class="text-2xl font-bold text-purple-600 border-b-2 border-purple-300 pb-2">💰 הכנסות
+                            נוספות</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם ישנן הכנסות נוספות?</label>
+                            <div class="space-y-3">
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="קצבאות ביטוח לאומי"
+                                        class="w-6 h-6">
+                                    <span class="text-lg">קצבאות ביטוח לאומי</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="פנסיה" class="w-6 h-6">
+                                    <span class="text-lg">פנסיה</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="סיוע בשכר דירה"
+                                        class="w-6 h-6">
+                                    <span class="text-lg">סיוע בשכר דירה</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="מזונות" class="w-6 h-6">
+                                    <span class="text-lg">מזונות</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- השכלה -->
+                        <h3 class="text-2xl font-bold text-blue-600 border-b-2 border-blue-300 pb-2 mt-8">🎓 השכלה</h3>
+
+                        <div>
+                            <label for="yearsOfStudy" class="block text-gray-800 mb-2">כמה שנות לימוד? *</label>
+                            <input type="number" id="yearsOfStudy" required min="0" max="30" placeholder="לדוגמה: 12"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש בגרות? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasBagrut" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasBagrut" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש מקצוע עם תעודה? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasProfession" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasProfession" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש תארים? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasDegree" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasDegree" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- רכב -->
+                        <h3 class="text-2xl font-bold text-red-600 border-b-2 border-red-300 pb-2 mt-8">🚗 רכב</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש רכב בבעלות? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                    <input type="radio" name="hasCar" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                    <input type="radio" name="hasCar" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="carDetailsContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="carLicenseNumber" class="block text-gray-800 mb-2">מספר רישוי *</label>
+                                <input type="text" id="carLicenseNumber" placeholder="מספר רישוי"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="carYear" class="block text-gray-800 mb-2">שנת עלייה לכביש *</label>
+                                <input type="number" id="carYear" min="1950" max="2025" placeholder="לדוגמה: 2018"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="carType" class="block text-gray-800 mb-2">סוג הרכב *</label>
+                                <input type="text" id="carType" placeholder="לדוגמה: טויוטה קורולה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 mb-3">האם הרכב משועבד? *</label>
+                                <div class="flex gap-4">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                        <input type="radio" name="carPledged" value="כן" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">כן</span>
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                        <input type="radio" name="carPledged" value="לא" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">לא</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="carPledgeContainer" class="hidden">
+                                <label for="carPledgeTo" class="block text-gray-800 mb-2">משועבד לטובת מי? *</label>
+                                <input type="text" id="carPledgeTo" placeholder="שם הגוף"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+
+                            <div class="border-4 border-dashed border-red-300 rounded-2xl p-6 bg-red-50">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: צילום רישיון רכב
+                                </div>
+                                <label for="carLicenseFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת
+                                    רישיון רכב *</label>
+                                <input type="file" id="carLicenseFiles" multiple accept="image/*,application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('carLicenseFiles').click()"
+                                    class="bg-red-600 hover:bg-red-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים
+                                </button>
+                                <div id="carLicenseFilesPreview" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- חשבון בנק -->
+                        <h3 class="text-2xl font-bold text-indigo-600 border-b-2 border-indigo-300 pb-2 mt-8">🏦 חשבון
+                            בנק</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש חשבון בנק פעיל? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-indigo-50 transition flex-1">
+                                    <input type="radio" name="hasBankAccount" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-indigo-50 transition flex-1">
+                                    <input type="radio" name="hasBankAccount" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="bankDetailsContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="bankName" class="block text-gray-800 mb-2">שם הבנק *</label>
+                                <input type="text" id="bankName" placeholder="לדוגמה: לאומי"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="bankBranch" class="block text-gray-800 mb-2">מספר סניף *</label>
+                                <input type="text" id="bankBranch" placeholder="לדוגמה: 789"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="bankAccount" class="block text-gray-800 mb-2">מספר חשבון *</label>
+                                <input type="text" id="bankAccount" placeholder="מספר חשבון"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+
+                            <div class="border-4 border-dashed border-indigo-300 rounded-2xl p-6 bg-indigo-50">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: תדפיס בנק 3 חודשים אחרונים בקובץ PDF
+                                </div>
+                                <label for="bankStatementFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת
+                                    תדפיס בנק *</label>
+                                <input type="file" id="bankStatementFiles" multiple accept="application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('bankStatementFiles').click()"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים (PDF)
+                                </button>
+                                <div id="bankStatementFilesPreview" class="mt-3"></div>
+                            </div>
+
+                            <div class="border-4 border-dashed border-indigo-300 rounded-2xl p-6 bg-indigo-50 mt-4">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: ריכוז יתרות בקובץ PDF
+                                </div>
+                                <label for="balanceSummaryFiles"
+                                    class="block text-gray-800 mb-3 text-xl font-bold">העלאת ריכוז יתרות *</label>
+                                <input type="file" id="balanceSummaryFiles" multiple accept="application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('balanceSummaryFiles').click()"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים (PDF)
+                                </button>
+                                <div id="balanceSummaryFilesPreview" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== שלב 4: חובות וחו"ל ========== -->
+            <div class="step-container" data-step="4">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <path d="M12 17h.01"></path>
+                        </svg>
+                        שאלות אחרונות
+                    </h2>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-gray-800 mb-3 text-xl">האם יש לך חובות למרכז קנסות בגין דוחות
+                                משטרה? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasTrafficDebts" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasTrafficDebts" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3 text-xl">האם היית בחו"ל בחמש השנים האחרונות?
+                                *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="traveledAbroad" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="traveledAbroad" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="travelDestinationsContainer" class="hidden">
+                            <label for="travelDestinations" class="block text-gray-800 mb-2 text-xl">איפה? *</label>
+                            <textarea id="travelDestinations" rows="4" placeholder="לדוגמה: טורקיה, יוון, איטליה"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition"></textarea>
+                            <p class="text-gray-500 text-base mt-1">ניתן לרשום מספר יעדים</p>
+                        </div>
+
+                        <div class="bg-green-100 border-2 border-green-500 rounded-2xl p-6 mt-8 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="mx-auto mb-3 text-green-600">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <h3 class="text-2xl font-bold text-green-700 mb-2">כמעט סיימנו!</h3>
+                            <p class="text-lg text-green-600">לחץ על "שלח טופס" למטה כדי לסיים</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- Navigation Buttons -->
+        <div class="flex gap-4 mt-6 mb-8">
+            <button type="button" id="prevBtn" onclick="changeStep(-1)"
+                class="flex-1 bg-gray-500 hover:bg-gray-600 text-white text-xl font-bold py-5 rounded-2xl transition shadow-lg flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                חזור
+            </button>
+            <button type="button" id="nextBtn" onclick="changeStep(1)"
+                class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xl font-bold py-5 rounded-2xl transition shadow-lg flex items-center justify-center gap-3">
+                הבא
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Status Message -->
+        <div id="statusMessage" class="hidden glass rounded-2xl p-6 text-center text-xl font-bold shadow-xl"></div>
+
+    </div>
+
+    <script src="script.js" defer></script>
+
+</body>
+
+</html>
