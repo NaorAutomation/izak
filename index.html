@@ -1192,13 +1192,21 @@
             };
 
             try {
-                await fetch('https://script.google.com/macros/s/AKfycbw45t2OJp2WgLA540gjvzA_2V8EzRdZRwKJ-SwcVECmQ5a6jiXn0YySXv4ip1lEROIk8g/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(formData)
-                });
-                showSuccess('✅ הטופס נשלח בהצלחה!<br><br>תודה רבה!<br>נחזור אליך בהקדם.');
-                setTimeout(() => location.reload(), 4000);
+                // שימוש ב-google.script.run במקום fetch
+                google.script.run
+                    .withSuccessHandler(function(response) {
+                        if (response.status === 'success') {
+                            showSuccess('✅ הטופס נשלח בהצלחה!<br><br>תודה רבה!<br>נחזור אליך בהקדם.');
+                            setTimeout(() => location.reload(), 4000);
+                        } else {
+                            showError('שגיאה: ' + response.message);
+                        }
+                    })
+                    .withFailureHandler(function(error) {
+                        showError('שגיאה בשליחת הטופס. אנא נסה שוב או פנה טלפונית.');
+                        console.error('Error:', error);
+                    })
+                    .processFormSubmission(formData);
             } catch (error) {
                 showError('שגיאה בשליחת הטופס. אנא נסה שוב או פנה טלפונית.');
                 console.error('Error:', error);
