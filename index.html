@@ -1,1439 +1,838 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>פרידום מדיקל - המרכז הישראלי לקאנביס</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>טופס לקוח - לילך אביאני</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#2E8B57', // ירוק פורסט - צבע עיקרי
-                        'secondary': '#F4BB44', // צהוב זהב - צבע משלים שמסמל קלילות
-                        'tertiary': '#6A5ACD', // סגול לבנדר - צבע משלים המסמל רוגע ומדיטציה
-                        'light': '#F0F8FF', // לבן עם גוון תכלת קלוש - רקע בהיר
-                        'dark': '#2C3E50', // שחור-כחול כהה - לטקסטים
-                    },
-                    fontFamily: {
-                        'rubik': ['"Rubik"', 'sans-serif'],
-                    },
-                },
-            },
-        }
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        * {
+            font-family: 'Heebo', sans-serif;
+        }
+
         body {
-            font-family: 'Rubik', sans-serif;
-            scroll-behavior: smooth;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        
-        body.loaded {
-            opacity: 1;
-        }
-
-        .hero-gradient {
-            background: linear-gradient(135deg, rgba(46, 139, 87, 0.9) 0%, rgba(106, 90, 205, 0.8) 100%);
-        }
-
-        /* התאמות למובייל */
-        @media (max-width: 640px) {
-            #home {
-                min-height: auto !important;
-                display: block;
-                padding-bottom: 120px; /* מרווח גדול יותר בתחתית */
-            }
-            
-            .scroll-hint {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 50;
-            }
-        }
-
-        .animate-float {
-            animation: floating 6s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .scale-hover:hover {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-        }
-        
-        /* סגנונות חדשים לאנימציות */
-        .animate-on-scroll {
-            opacity: 0;
-            transition: all 0.8s ease;
-        }
-        
-        .animate-visible {
-            opacity: 1;
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease forwards;
-        }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        
-        .fade-in-right {
-            animation: fadeInRight 0.8s ease forwards;
-        }
-        
-        .fade-in-left {
-            animation: fadeInLeft 0.8s ease forwards;
-        }
-        
-        .slide-in-up {
-            animation: slideInUp 0.8s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slideInUp {
-            from { transform: translateY(100px); }
-            to { transform: translateY(0); }
-        }
-        
-        /* אנימציות לתפריט מובייל */
-        @keyframes slideDown {
-            from { 
-                opacity: 0;
-                max-height: 0;
-                transform: translateY(-10px);
-            }
-            to { 
-                opacity: 1;
-                max-height: 400px;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 1;
-                max-height: 400px;
-                transform: translateY(0);
-            }
-            to { 
-                opacity: 0;
-                max-height: 0;
-                transform: translateY(-10px);
-            }
-        }
-
-        .mobile-menu-open {
-            animation: slideDown 0.3s ease forwards;
-            transform-origin: top;
-            overflow: hidden;
-            display: block;
-        }
-
-        .mobile-menu-close {
-            animation: slideUp 0.3s ease forwards;
-            transform-origin: top;
-            overflow: hidden;
-        }
-        
-        .falling-leaf {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-size: contain;
-            background-repeat: no-repeat;
+            background-image: url('images/WhatsApp Image 2025-12-07 at 12.38.50_5eca94fe.jpg');
+            background-size: cover;
             background-position: center;
-            opacity: 0.6;
-            z-index: 1;
-        }
-        
-        .number-animate {
-            display: inline-block;
-        }
-        
-        .nav-scrolled {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            background-color: rgba(255,255,255,0.95);
-        }
-        
-        /* סגנונות לשדות הקלט בטופס יצירת קשר */
-        .contact-form-input::placeholder {
-            color: rgba(255, 255, 255, 0.9);
-            opacity: 1; /* Firefox */
-        }
-        
-        .contact-form-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .contact-form-input::-ms-input-placeholder { /* Microsoft Edge */
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .file-upload-button:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-        
-        .scroll-hint a {
-            backdrop-filter: blur(4px);
-        }
-        
-        @keyframes subtle-arrow {
-            0% {
-                transform: translateY(0);
-                opacity: 0.6;
-            }
-            50% {
-                transform: translateY(4px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 0.6;
-            }
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
-        .scroll-arrow {
-            animation: subtle-arrow 2s infinite ease-in-out;
-        }
-
-        .modern-scroll-btn {
-            background: linear-gradient(225deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
-            box-shadow: 
-                0 4px 15px rgba(0,0,0,0.1),
-                0 1px 2px rgba(255,255,255,0.1) inset,
-                0 -1px 2px rgba(0,0,0,0.2) inset;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .modern-scroll-btn:hover {
-            background: linear-gradient(225deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-            transform: translateY(-2px);
-            box-shadow: 
-                0 6px 20px rgba(0,0,0,0.15),
-                0 1px 3px rgba(255,255,255,0.2) inset,
-                0 -1px 2px rgba(0,0,0,0.1) inset;
-        }
-        
-        /* עיצוב חדש לחלוטין לכפתור גלילה */
-        .scroll-down-circle {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .circle-inner {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            color: white;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
-        
-        .circle-pulse {
-            position: absolute;
+        body::before {
+            content: '';
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0;
+        }
+
+        #app {
+            position: relative;
             z-index: 1;
-            animation: pulse-animation 3s infinite ease-in-out;
         }
-        
-        @keyframes pulse-animation {
-            0% {
-                transform: scale(1);
-                opacity: 0.2;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 0.1;
-            }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        input,
+        select,
+        textarea {
+            font-size: 18px !important;
+            padding: 16px !important;
+        }
+
+        label {
+            font-size: 20px !important;
+            font-weight: 600 !important;
+        }
+
+        .file-preview {
+            font-size: 16px;
+            padding: 12px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .file-instruction {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .error-message {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+
+            0%,
             100% {
-                transform: scale(1);
-                opacity: 0.2;
+                transform: translateX(0);
             }
-        }
-        
-        .scroll-down-circle:hover .circle-inner {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
-        }
-        
-        .scroll-down-circle i {
-            animation: subtle-bounce 2s infinite ease-in-out;
-        }
-        
-        @keyframes subtle-bounce {
-            0%, 100% {
-                transform: translateY(0);
+
+            25% {
+                transform: translateX(-10px);
             }
-            50% {
-                transform: translateY(3px);
+
+            75% {
+                transform: translateX(10px);
             }
         }
     </style>
 </head>
-<body class="bg-light text-dark">
-    <!-- נאב בר עם לוגו וניווט -->
-    <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md shadow-md" id="mainNav">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <img src="https://i.ibb.co/ynhMr6bs/9693bc10-162c-40d9-bc17-445ce64100df-removebg-preview.png" alt="פרידום מדיקל לוגו" class="h-16 md:h-20">
-                    <span class="font-bold text-xl text-primary">פרידום מדיקל</span>
+
+<body class="p-4 md:p-6">
+
+    <div id="app" class="max-w-2xl mx-auto">
+
+        <!-- Header -->
+        <div class="glass rounded-3xl p-6 md:p-8 mb-6 text-center shadow-2xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-3">לילך אביאני</h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-4 leading-relaxed">פירוק חברה חדלות פירעון והסדר נושאים</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 text-lg text-gray-600">
+                <div class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                        </path>
+                    </svg>
+                    <span class="font-semibold">054-319-5621</span>
                 </div>
-                
-                <!-- ניווט למסכים גדולים -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#home" class="font-medium hover:text-primary transition-colors"><i class="fas fa-home ml-1"></i>בית</a>
-                    <a href="#services" class="font-medium hover:text-primary transition-colors"><i class="fas fa-leaf ml-1"></i>שירותים</a>
-                    <a href="#testimonials" class="font-medium hover:text-primary transition-colors"><i class="fas fa-star ml-1"></i>המלצות</a>
-                    <a href="#contact" class="font-medium hover:text-primary transition-colors"><i class="fas fa-envelope ml-1"></i>צור קשר</a>
-                    <a href="#contact" class="bg-primary text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all shadow-lg scale-hover">
-                        <i class="fas fa-phone-alt ml-2"></i>התייעצות חינם
-                    </a>
-                </div>
-                
-                <!-- כפתור תפריט למובייל -->
-                <button class="md:hidden text-2xl" id="mobileMenuBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            
-            <!-- תפריט מובייל - מוסתר כברירת מחדל -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 overflow-hidden max-h-0">
-                <div class="flex flex-col gap-4">
-                    <a href="#home" class="font-medium hover:text-primary transition-colors py-2 border-b border-gray-100"><i class="fas fa-home ml-2"></i>בית</a>
-                    <a href="#services" class="font-medium hover:text-primary transition-colors py-2 border-b border-gray-100"><i class="fas fa-leaf ml-2"></i>שירותים</a>
-                    <a href="#testimonials" class="font-medium hover:text-primary transition-colors py-2 border-b border-gray-100"><i class="fas fa-star ml-2"></i>המלצות</a>
-                    <a href="#contact" class="font-medium hover:text-primary transition-colors py-2"><i class="fas fa-envelope ml-2"></i>צור קשר</a>
-                    <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-full text-center hover:bg-opacity-90 transition-all shadow-lg">
-                        <i class="fas fa-phone-alt ml-2"></i>התייעצות חינם
-                    </a>
+                <div class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    <span class="font-semibold">lilach.aviani@gmail.com</span>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <!-- סקציית בית - Hero Section -->
-    <section id="home" class="pt-16 pb-10 md:pt-40 md:pb-32 hero-gradient text-white relative overflow-hidden animate-on-scroll" data-animation-type="fade-in">
-        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1536819114556-29194dcaad36?ixlib=rb-4.0.3')] bg-cover bg-center opacity-20"></div>
-        
-        <!-- מכולה לעלים נופלים -->
-        <div id="leavesContainer" class="absolute top-0 left-0 w-full h-full overflow-hidden z-0"></div>
-        
-        <!-- עיטורים מרחפים -->
-        <div class="absolute top-1/4 left-10 w-16 h-16 md:w-24 md:h-24 bg-white/10 rounded-full blur-xl animate-float"></div>
-        <div class="absolute bottom-1/4 right-10 w-20 h-20 md:w-32 md:h-32 bg-secondary/20 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
-        <div class="absolute top-2/3 left-1/3 w-12 h-12 md:w-16 md:h-16 bg-tertiary/20 rounded-full blur-xl animate-float" style="animation-delay: 1s;"></div>
-        
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
-                <div class="order-2 md:order-1 animate-on-scroll" data-animation-type="fade-in-right">
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight">
-                        <span class="block text-secondary">פרידום מדיקל</span>
-                        המרכז הישראלי לקאנביס 
-                    </h1>
-                    <p class="text-lg md:text-2xl mb-4 md:mb-8 text-white/90 leading-relaxed">איכות של חיים, זה המשמעות שלנו</p>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="#services" class="bg-white text-primary px-5 py-2 md:px-8 md:py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover text-sm md:text-base">
-                            <i class="fas fa-leaf ml-2"></i>הרישיון שלך מחכה לך
-                        </a>
-                        <a href="https://wa.me/972559835789" target="_blank" rel="noopener noreferrer" class="bg-secondary text-white px-5 py-2 md:px-8 md:py-4 rounded-full font-medium text-center hover:bg-opacity-90 transition-all shadow-lg scale-hover text-sm md:text-base">
-                            <i class="fab fa-whatsapp ml-2"></i>דבר איתנו עכשיו
-                        </a>
-                    </div>
-                    
-                    <div class="mt-6 md:mt-12 flex items-center gap-3 md:gap-6 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
-                        <div class="flex -space-x-3 md:-space-x-4 rtl:space-x-reverse">
-                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80" alt="משתמש">
-                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80" alt="משתמש">
-                            <img class="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80" alt="משתמש">
-                        </div>
+        <!-- Progress Bar -->
+        <div class="glass rounded-2xl p-5 mb-6 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-xl font-bold text-gray-700">שלב <span id="currentStep">1</span> מתוך <span
+                        id="totalSteps">4</span></span>
+                <span class="text-xl font-bold text-blue-600"><span id="progressPercent">0</span>%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div id="progressBar"
+                    class="bg-gradient-to-r from-blue-500 to-purple-500 h-4 rounded-full transition-all duration-500"
+                    style="width: 0%"></div>
+            </div>
+            <p id="stepTitle" class="text-center mt-3 text-lg font-semibold text-gray-600"></p>
+        </div>
+
+        <form id="mainForm">
+
+            <!-- ========== שלב 1: פרטי החייב ========== -->
+            <div class="step-container active" data-step="1">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        פרטי החייב
+                    </h2>
+
+                    <div class="space-y-6">
                         <div>
-                            <p class="font-medium text-sm md:text-base"><i class="fas fa-check-circle text-secondary ml-1"></i> למעלה מ-<span class="number-animate">1000</span> מטופלים מרוצים</p>
-                            <div class="flex mt-1">
-                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
-                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
-                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
-                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
-                                <i class="fas fa-star text-secondary text-xs md:text-base"></i>
-                                <span class="mr-2 font-medium text-sm md:text-base">5.0</span>
-                            </div>
+                            <label for="fullName" class="block text-gray-800 mb-2">שם מלא *</label>
+                            <input type="text" id="fullName" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                         </div>
-                    </div>
-                </div>
-                <div class="order-1 md:order-2 flex justify-center animate-on-scroll" data-animation-type="fade-in-left">
-                    <div class="relative">
-                        <div class="w-48 h-48 md:w-80 md:h-80 bg-tertiary/20 rounded-full absolute -top-6 -right-6 blur-md"></div>
-                        <img src="https://i.ibb.co/ynhMr6bs/9693bc10-162c-40d9-bc17-445ce64100df-removebg-preview.png" alt="לוגו פרידום מדיקל" class="w-full max-w-[200px] md:max-w-md relative z-10 animate-float" id="mainLogo">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- גלילה לשירותים -->
-            <div class="flex justify-center mt-8 md:mt-16 lg:mt-20 animate-on-scroll scroll-hint" data-animation-type="fade-in-up" data-animation-delay="600">
-                <a href="#services" class="scroll-down-circle group">
-                    <div class="circle-pulse"></div>
-                    <div class="circle-inner flex items-center justify-center">
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- סקציית שירותים -->
-    <section id="services" class="py-20 md:py-32 bg-white animate-on-scroll" data-animation-type="fade-in">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16 animate-on-scroll" data-animation-type="fade-in-up">
-                <span class="inline-block py-1 px-4 rounded-full bg-primary/10 text-primary font-medium text-sm mb-4">השירותים שלנו</span>
-                <h2 class="text-3xl md:text-4xl font-bold">הדרך הקלה והחוקית לקאנביס רפואי</h2>
-                <p class="mt-4 text-gray-600 max-w-3xl mx-auto">אנחנו מלווים אותך צעד אחר צעד בתהליך קבלת רישיון קנאביס רפואי, חידוש רישיון והגדלת מינון בצורה חוקית ובטוחה</p>
-            </div>
-            
-            <!-- כרטיס שירות עיקרי - רישיון קנאביס לנוסעים לחו"ל -->
-            <div class="bg-gradient-to-br from-primary/10 to-tertiary/10 rounded-2xl p-6 md:p-8 shadow-xl mb-16 animate-on-scroll" data-animation-type="fade-in-up">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="order-2 md:order-1">
-                        <div class="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-primary/20 text-primary font-medium text-sm mb-6">
-                            <i class="fas fa-plane"></i>
-                            <span>רישיון קנאביס גם לנוסעים לחו"ל</span>
+                        <div>
+                            <label for="idNumber" class="block text-gray-800 mb-2">תעודת זהות (9 ספרות) *</label>
+                            <input type="text" id="idNumber" required maxlength="9" pattern="[0-9]{9}"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">יש להזין 9 ספרות בלבד</p>
                         </div>
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4">פרידום מדיקל - חברה חוקית ובטוחה!</h3>
-                        <p class="mb-6 text-gray-700">תשלום רק לאחר קבלת הרישיון! לכל אחד מגיע לחיות ללא כאבים 😉</p>
-                        
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-primary mt-1"></i>
-                                <span>רופאים מוסמכים ע״י המדינה</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-primary mt-1"></i>
-                                <span>חידוש רישיון קיים</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-primary mt-1"></i>
-                                <span>הגדלת מינון וליווי בתהליך לרישיון קיים</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-primary mt-1"></i>
-                                <span>הבדיקה מאושרת על פי נוהל 106 של משרד הבריאות</span>
-                            </li>
-                        </ul>
-                        
-                        <p class="mb-6 text-gray-700">בלי להסתבך, בלי להתרוצץ, הכל תחת כתובת אחת עם הרבה הכוונה ויד מסייעת. אנחנו מנהלים עבורכם את התהליך מתחילתו ועד סופו.</p>
-                        
-                        <div class="bg-white rounded-xl p-5 shadow-md">
-                            <h4 class="font-semibold mb-3">אנחנו נסייע לך באיסוף מסמכים הנדרשים:</h4>
-                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <li class="flex items-center gap-2">
-                                    <i class="fas fa-file-medical text-primary"></i>
-                                    <span>סיכום מידע רפואי</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fas fa-pills text-primary"></i>
-                                    <span>דוח ניפוק תרופות שנה אחורה</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fas fa-heartbeat text-primary"></i>
-                                    <span>כאבים/טראומה/קרוהן וכל מחלה אחרת</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fas fa-clipboard-list text-primary"></i>
-                                    <span>מכתב המראה סיכום בעיה</span>
-                                </li>
-                            </ul>
-                            <div class="mt-4 pt-3 border-t border-gray-200">
-                                <p class="font-medium flex items-center">
-                                    <i class="fas fa-shield-alt text-primary mr-2"></i>
-                                    עוזרים בבניית התיק, עד להנפקת הרישיון
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8">
-                            <a href="https://wa.me/972559835789?text=אשמח%20לקבל%20מידע%20נוסף%20על%20שירות%20חידוש%20והגדלת%20מינון" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition-all shadow-lg font-medium scale-hover">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>לשיחת ייעוץ ללא עלות</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="order-1 md:order-2">
-                        <div class="relative">
-                            <div class="absolute -top-5 -right-5 w-full h-full bg-secondary/30 rounded-2xl transform rotate-3"></div>
-                            <img src="https://images.cdn-files-a.com/uploads/8360110/400_666ee01ce79a7.jpg" alt="קאנאביס חו״ל" class="rounded-2xl w-full h-auto relative z-10 shadow-lg">
-                            <div class="absolute -bottom-4 left-4 glass-effect py-2 px-4 rounded-full shadow-lg">
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-shield-check text-secondary text-xl"></i>
-                                    <span class="text-white font-medium text-sm">100% חוקי ומאושר</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- כרטיסי שירותים נוספים -->
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- חידוש והגדלת מינון -->
-                <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-right" data-animation-delay="300">
-                    <div class="mb-6 relative">
-                        <img src="https://i.ibb.co/fPKGssG/cc30ba12-1019-46d6-8112-5d1507cd9275.jpg" alt="חידוש והגדלת מינון" class="w-full h-64 object-cover rounded-xl">
-                        <div class="absolute top-4 right-4 bg-primary text-white py-1 px-4 rounded-full text-sm font-medium">
-                            <i class="fas fa-sync-alt ml-1"></i>חידוש והגדלת מינון
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">שירות חידוש והגדלת מינון מתקדם</h3>
-                    <p class="text-gray-600 mb-6">נמאס לך להתעסק בבירוקרטיה? שירות החידוש וההגדלה שלנו מציע פתרון מקיף ומהיר לבעלי רישיון קיים. אנו מספקים ליווי אישי, תמיכה רפואית והגדלת מינון מותאמת אישית כדי להבטיח שתקבל את הטיפול הטוב ביותר עבורך.</p>
-                    
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>תהליך דיגיטלי וחדשני בשנת 2025</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>טכנולוגיה מתקדמת לניטור השפעת הטיפול</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>התאמה אישית של זנים ומינון למצבך הרפואי</span>
-                        </li>
-                    </ul>
-                    
-                    <a href="https://wa.me/972559835789?text=אשמח%20לקבל%20מידע%20נוסף%20על%20שירות%20חידוש%20והגדלת%20מינון" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary font-medium hover:underline">
-                        <span>קבל מידע נוסף</span>
-                        <i class="fas fa-arrow-left mr-2"></i>
-                    </a>
-                </div>
-                
-                <!-- רישיון לקאנאביס רפואי -->
-                <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-left" data-animation-delay="500">
-                    <div class="mb-6 relative">
-                        <img src="https://i.ibb.co/SDWTFXMd/01db3daa-00c5-472f-8f07-db0acb14103f.jpg" alt="רישיון לקאנאביס רפואי" class="w-full h-64 object-cover rounded-xl">
-                        <div class="absolute top-4 right-4 bg-secondary text-white py-1 px-4 rounded-full text-sm font-medium">
-                            <i class="fas fa-id-card ml-1"></i>רישיון קאנאביס רפואי
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">רישיון קאנאביס רפואי בהתאמה אישית</h3>
-                    <p class="text-gray-600 mb-6">ב-2025, פרידום מדיקל מציעה תהליך מתקדם לקבלת רישיון קאנאביס רפואי עם טכנולוגיה ביומטרית וליווי AI. אנחנו מנתחים את הפרופיל הרפואי שלך ומתאימים את הטיפול בצורה מדויקת להקלה מיידית. שירות מהפכני שמשלב רפואה מתקדמת עם חדשנות טכנולוגית.</p>
-                    
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>סריקה גנטית להתאמה מושלמת של זנים</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>מעקב בזמן אמת אחר השפעות הטיפול</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1"></i>
-                            <span>תמיכה 24/7 במערכת צ'אט רפואית אוטומטית</span>
-                        </li>
-                    </ul>
-                    
-                    <a href="https://wa.me/972559835789?text=אשמח%20לקבל%20מידע%20נוסף%20על%20רישיון%20קאנאביס%20רפואי" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary font-medium hover:underline">
-                        <span>קבל מידע נוסף</span>
-                        <i class="fas fa-arrow-left mr-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- סקציית המלצות -->
-    <section id="testimonials" class="py-20 md:py-32 bg-gradient-to-b from-white to-primary/5 relative overflow-hidden animate-on-scroll" data-animation-type="fade-in">
-        <!-- עיטורים דקורטיביים -->
-        <div class="absolute top-20 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 left-0 w-80 h-80 bg-tertiary/10 rounded-full blur-3xl"></div>
-        
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-16 animate-on-scroll" data-animation-type="fade-in-up">
-                <span class="inline-block py-1 px-4 rounded-full bg-primary/10 text-primary font-medium text-sm mb-4">המלצות</span>
-                <h2 class="text-3xl md:text-4xl font-bold">מה הלקוחות שלנו אומרים</h2>
-                <p class="mt-4 text-gray-600 max-w-3xl mx-auto">אלפי לקוחות כבר קיבלו את חייהם בחזרה בעזרת הליווי והשירות שלנו. הצטרפו גם אתם.</p>
-            </div>
-            
-            <!-- המלצות אמיתיות מוואטסאפ -->
-            <div class="mb-16 grid md:grid-cols-3 gap-8">
-                <!-- המלצות מוואטסאפ -->
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="100">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+                        <div>
+                            <label for="birthDate" class="block text-gray-800 mb-2">תאריך לידה *</label>
+                            <input type="date" id="birthDate" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                         </div>
-                    </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c819898e442.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
-                </div>
-                
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="200">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+
+                        <div>
+                            <label for="phone" class="block text-gray-800 mb-2">טלפון נייד *</label>
+                            <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10"
+                                placeholder="לדוגמה: 0501234567"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">יש להזין 10 ספרות (עם 0)</p>
                         </div>
-                    </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c81f3b7a9a5.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
-                </div>
-                
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+
+                        <div>
+                            <label for="email" class="block text-gray-800 mb-2">כתובת מייל *</label>
+                            <input type="email" id="email" required placeholder="example@gmail.com"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                         </div>
-                    </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c81f3b7303d.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
-                </div>
-            </div>
-            
-            <!-- שורה שנייה של המלצות -->
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="400">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+
+                        <div>
+                            <label for="maritalStatus" class="block text-gray-800 mb-2">סטטוס אישי *</label>
+                            <select id="maritalStatus" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                <option value="">בחר סטטוס</option>
+                                <option value="נשוי">נשוי/נשואה</option>
+                                <option value="גרוש">גרוש/גרושה</option>
+                                <option value="רווק">רווק/רווקה</option>
+                                <option value="פרוד">פרוד/פרודה</option>
+                                <option value="אלמן">אלמן/אלמנה</option>
+                            </select>
                         </div>
-                    </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c81f3b76508.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
-                </div>
-                
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="500">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+
+                        <div id="spouseBirthdateContainer" class="hidden">
+                            <label for="spouseBirthdate" class="block text-gray-800 mb-2">תאריך לידה של בת/בן הזוג
+                                *</label>
+                            <input type="date" id="spouseBirthdate"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                         </div>
-                    </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c81f3b6c8e5.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
-                </div>
-                
-                <div class="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="600">
-                    <div class="bg-white/90 absolute bottom-0 right-0 left-0 px-6 py-4 backdrop-blur-sm z-10">
-                        <div class="flex gap-3 items-center">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-green-100">
-                                <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">לקוח מרוצה</h4>
-                                <div class="flex">
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                    <i class="fas fa-star text-secondary"></i>
-                                </div>
-                            </div>
+
+                        <div id="divorceYearContainer" class="hidden">
+                            <label for="divorceYear" class="block text-gray-800 mb-2">שנת גירושין *</label>
+                            <input type="number" id="divorceYear" min="1950" max="2025" placeholder="לדוגמה: 2020"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                         </div>
+
+                        <div>
+                            <label for="totalChildren" class="block text-gray-800 mb-2">כמה ילדים יש לך בסה"כ? *</label>
+                            <input type="number" id="totalChildren" required min="0" placeholder="0"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="childrenUnder20" class="block text-gray-800 mb-2">כמה מהם מתחת לגיל 20?
+                                *</label>
+                            <input type="number" id="childrenUnder20" required min="0" placeholder="0"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <!-- קבצים שלב 1 -->
+                        <div class="border-4 border-dashed border-blue-300 rounded-2xl p-6 bg-blue-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: צילום תעודת זהות עם כל הספח פתוח
+                            </div>
+                            <label for="idFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת צילום ת"ז
+                                *</label>
+                            <input type="file" id="idFiles" multiple accept="image/*,application/pdf" class="hidden"
+                                required>
+                            <button type="button" onclick="document.getElementById('idFiles').click()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <p class="text-gray-600 mt-3 text-base text-center">ניתן לבחור מספר קבצים (תמונות או PDF)
+                            </p>
+                            <div id="idFilesPreview" class="mt-3"></div>
+                        </div>
+
+                        <div id="divorceCertContainer"
+                            class="hidden border-4 border-dashed border-orange-300 rounded-2xl p-6 bg-orange-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: תעודת גירושין
+                            </div>
+                            <label for="divorceCertFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת תעודת
+                                גירושין *</label>
+                            <input type="file" id="divorceCertFiles" multiple accept="image/*,application/pdf"
+                                class="hidden">
+                            <button type="button" onclick="document.getElementById('divorceCertFiles').click()"
+                                class="bg-orange-600 hover:bg-orange-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <div id="divorceCertFilesPreview" class="mt-3"></div>
+                        </div>
+
                     </div>
-                    <img src="https://images.cdn-files-a.com/uploads/8360110/2000_64c819898e442.jpg?width=1600" alt="המלצת וואטסאפ אמיתית" class="w-full h-auto">
                 </div>
             </div>
-            
-            <!-- מודל להצגת התמונה המוגדלת -->
-            <!-- <div id="testimonialModal" class="fixed inset-0 bg-black/90 z-50 hidden">
-                <div class="modal-content bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                    <button id="closeModal" class="absolute top-2 right-2 z-10 text-white bg-white/10 hover:bg-red-500/50 rounded-full p-2 transition-all">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <div class="text-center mb-4">
-                        <h3 class="text-white text-xl font-bold">המלצת לקוח</h3>
-                    </div>
-                    <div class="text-center">
-                        <img id="modalImage" src="" alt="המלצה מוגדלת" class="rounded-lg shadow-lg mx-auto">
-                    </div>
-                </div>
-            </div> -->
-            
-            <!-- מונה לקוחות -->
-            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div class="p-6 bg-white rounded-2xl shadow-lg animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="100">
-                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2"><span class="number-animate">1000</span>+</div>
-                    <p class="text-gray-600">לקוחות מרוצים</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow-lg animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
-                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2"><span class="number-animate">98</span>%</div>
-                    <p class="text-gray-600">אחוזי הצלחה</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow-lg animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="500">
-                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2"><span class="number-animate">14</span></div>
-                    <p class="text-gray-600">ימי טיפול בממוצע</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow-lg animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="700">
-                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2"><span class="number-animate">5.0</span></div>
-                    <p class="text-gray-600">דירוג ממוצע</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- סקציית צור קשר -->
-    <section id="contact" class="py-20 md:py-32 bg-gradient-to-br from-primary to-tertiary text-white relative overflow-hidden animate-on-scroll" data-animation-type="fade-in">
-        <!-- עיטורים דקורטיביים -->
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?ixlib=rb-4.0.3')] opacity-10 bg-cover bg-center"></div>
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/90 to-tertiary/90"></div>
-        
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                    <span class="inline-block py-1 px-4 rounded-full bg-white/10 text-white font-medium text-sm mb-4">צור קשר</span>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">מוכנים לקחת את הצעד הראשון?</h2>
-                    <p class="text-white/80 text-lg mb-8">השאירו פרטים ומומחה מהצוות שלנו יחזור אליכם בהקדם. אנחנו כאן לענות על כל שאלה ולעזור לכם בתהליך.</p>
-                    
-                    <div class="space-y-6 mb-8">
-                        <div class="flex items-start gap-4">
-                            <div class="bg-white/10 p-3 rounded-full">
-                                <i class="fab fa-whatsapp text-secondary"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-lg">וואטסאפ</h3>
-                                <p class="text-white/80">0559835789</p>
+
+            <!-- ========== שלב 2: מגורים + תעסוקה ========== -->
+            <div class="step-container" data-step="2">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        מגורים ותעסוקה
+                    </h2>
+
+                    <div class="space-y-6">
+                        <!-- מגורים -->
+                        <h3 class="text-2xl font-bold text-purple-600 border-b-2 border-purple-300 pb-2">🏠 מגורים</h3>
+
+                        <div>
+                            <label for="residenceType" class="block text-gray-800 mb-2">היכן אתה מתגורר? *</label>
+                            <select id="residenceType" required
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                <option value="">בחר סוג מגורים</option>
+                                <option value="שכירות">שכירות</option>
+                                <option value="דירה בבעלות">דירה בבעלות</option>
+                                <option value="עם הורים או משפחה">עם הורים או בני משפחה</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="address" class="block text-gray-800 mb-2">כתובת מגורים *</label>
+                            <input type="text" id="address" required placeholder="רחוב, מספר בית, עיר"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label for="rooms" class="block text-gray-800 mb-2">כמה חדרים יש בדירה? *</label>
+                            <input type="number" id="rooms" required min="1" max="20" placeholder="לדוגמה: 3"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div id="rentContainer" class="hidden">
+                            <label for="rentAmount" class="block text-gray-800 mb-2">כמה משלם שכירות? (בשקלים) *</label>
+                            <input type="number" id="rentAmount" min="0" placeholder="לדוגמה: 3500"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">סכום חודשי</p>
+                        </div>
+
+                        <div id="mortgageContainer" class="hidden">
+                            <label for="mortgageAmount" class="block text-gray-800 mb-2">כמה משלם משכנתא? (בשקלים)
+                                *</label>
+                            <input type="number" id="mortgageAmount" min="0" placeholder="לדוגמה: 4200"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            <p class="text-gray-500 text-base mt-1">סכום חודשי</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם נולדת בארץ? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="bornInIsrael" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="bornInIsrael" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-white/10 p-3 rounded-full">
-                                <i class="fas fa-envelope text-secondary"></i>
+
+                        <div id="immigrationContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="immigrationCountry" class="block text-gray-800 mb-2">מאיפה עלית? *</label>
+                                <input type="text" id="immigrationCountry" placeholder="שם המדינה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg">אימייל</h3>
-                                <p class="text-white/80">Fredomedical420@gmail.com</p>
+                                <label for="immigrationYear" class="block text-gray-800 mb-2">שנת עלייה *</label>
+                                <input type="number" id="immigrationYear" min="1900" max="2025"
+                                    placeholder="לדוגמה: 1995"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-white/10 p-3 rounded-full">
-                                <i class="fas fa-map-marker-alt text-secondary"></i>
+
+                        <div class="border-4 border-dashed border-purple-300 rounded-2xl p-6 bg-purple-50">
+                            <div class="file-instruction">
+                                📄 יש להעלות: הסכם שכירות עדכני (אם רלוונטי)
                             </div>
-                            <div>
-                                <h3 class="font-bold text-lg">כתובת</h3>
-                                <p class="text-white/80">מחוז דרום, ישראל</p>
+                            <label for="rentContractFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת הסכם
+                                שכירות</label>
+                            <input type="file" id="rentContractFiles" multiple accept="image/*,application/pdf"
+                                class="hidden">
+                            <button type="button" onclick="document.getElementById('rentContractFiles').click()"
+                                class="bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <div id="rentContractFilesPreview" class="mt-3"></div>
+                        </div>
+
+                        <!-- תעסוקה - החייב -->
+                        <h3 class="text-2xl font-bold text-green-600 border-b-2 border-green-300 pb-2 mt-8">💼 תעסוקה -
+                            שלך</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם אתה עובד? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-green-50 transition flex-1">
+                                    <input type="radio" name="employed" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-green-50 transition flex-1">
+                                    <input type="radio" name="employed" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-white/10 p-3 rounded-full">
-                                <i class="fab fa-telegram text-secondary"></i>
+
+                        <div id="employmentContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="companyName" class="block text-gray-800 mb-2">שם החברה *</label>
+                                <input type="text" id="companyName" placeholder="שם החברה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg">טלגרם</h3>
-                                <p class="text-white/80">0506821618</p>
+                                <label for="jobTitle" class="block text-gray-800 mb-2">מה התפקיד שלך? *</label>
+                                <input type="text" id="jobTitle" placeholder="תפקיד"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="jobStartDate" class="block text-gray-800 mb-2">תאריך תחילת עבודה *</label>
+                                <input type="date" id="jobStartDate"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex gap-4">
-                        <a href="#" class="bg-white/10 hover:bg-primary p-3 rounded-full transition-all">
-                            <i class="fab fa-facebook-f text-white"></i>
-                        </a>
-                        <a href="#" class="bg-white/10 hover:bg-primary p-3 rounded-full transition-all">
-                            <i class="fab fa-instagram text-white"></i>
-                        </a>
-                        <a href="https://wa.me/972559835789" class="bg-white/10 hover:bg-primary p-3 rounded-full transition-all">
-                            <i class="fab fa-whatsapp text-white"></i>
-                        </a>
-                        <a href="https://t.me/+9720506821618" class="bg-white/10 hover:bg-primary p-3 rounded-full transition-all">
-                            <i class="fab fa-telegram text-white"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="glass-effect rounded-2xl p-8 shadow-2xl">
-                        <h3 class="text-xl font-bold mb-6 text-center">השאירו פרטים לשיחת ייעוץ</h3>
-                        <form class="space-y-4" id="contactForm">
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">שם מלא</label>
-                                <input type="text" class="form-input w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white text-right contact-form-input" placeholder="הזן את שמך המלא">
-                            </div>
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">טלפון</label>
-                                <input type="tel" class="form-input w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white text-right contact-form-input" placeholder="הזן את מספר הטלפון שלך">
-                            </div>
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">אימייל</label>
-                                <input type="email" class="form-input w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white text-right contact-form-input" placeholder="הזן את כתובת האימייל שלך">
-                            </div>
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">איך נוכל לעזור לך?</label>
-                                <select class="form-select w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white text-right contact-form-input" style="color: white !important;">
-                                    <option style="color: black;">קבלת רישיון חדש</option>
-                                    <option style="color: black;">חידוש רישיון</option>
-                                    <option style="color: black;">הגדלת מינון</option>
-                                    <option style="color: black;">מידע על רישיון לנוסעים לחו"ל</option>
-                                    <option style="color: black;">אחר</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">הודעה (אופציונלי)</label>
-                                <textarea class="form-textarea w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white text-right h-24 contact-form-input" placeholder="כתוב את הודעתך כאן..."></textarea>
-                            </div>
-                            <div>
-                                <label class="text-white/80 block mb-2 text-sm">העלאת מסמכים (אופציונלי)</label>
-                                <div class="flex flex-col gap-3">
-                                    <label class="flex items-center justify-center w-full h-14 px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white cursor-pointer hover:bg-white/25 transition-all file-upload-button">
-                                        <i class="fas fa-upload ml-2"></i>
-                                        <span>העלה תמונות, PDF או מסמכים</span>
-                                        <input type="file" class="hidden" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="fileUpload">
+
+                        <div>
+                            <label for="netSalary" class="block text-gray-800 mb-2">כמה אתה מרוויח נטו? (בשקלים)
+                                *</label>
+                            <input type="number" id="netSalary" required min="0" placeholder="לדוגמה: 8000"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <!-- תעסוקה - בן/בת זוג -->
+                        <div id="spouseEmploymentSection" class="hidden">
+                            <h3 class="text-2xl font-bold text-pink-600 border-b-2 border-pink-300 pb-2 mt-8">💼 תעסוקה
+                                - בן/בת הזוג</h3>
+
+                            <div class="mt-4">
+                                <label class="block text-gray-800 mb-3">האם בן/בת הזוג עובד/ת? *</label>
+                                <div class="flex gap-4">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-pink-50 transition flex-1">
+                                        <input type="radio" name="spouseEmployed" value="כן" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">כן</span>
                                     </label>
-                                    <p class="text-white/70 text-xs mr-2 text-right">ניתן להעלות קבצים (PDF, תמונות או מסמכים) בגודל עד 5MB לקובץ</p>
-                                    <!-- אזור להצגת הקבצים שנבחרו -->
-                                    <div id="selectedFiles" class="mt-3 bg-white/10 rounded-lg p-3 hidden border border-white/20 backdrop-blur-sm transition-all duration-300">
-                                        <div class="flex justify-between items-center mb-3 border-b border-white/10 pb-2">
-                                            <p class="text-sm font-medium text-white flex items-center">
-                                                <i class="fas fa-file-alt mr-2 text-secondary"></i>
-                                                <span>קבצים מצורפים</span>
-                                            </p>
-                                            <span class="text-xs text-white/60" id="filesCounter">0 קבצים</span>
-                                        </div>
-                                        <ul id="fileList" class="text-white/80 text-sm space-y-2 max-h-40 overflow-y-auto pr-1"></ul>
-                                    </div>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-pink-50 transition flex-1">
+                                        <input type="radio" name="spouseEmployed" value="לא" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">לא</span>
+                                    </label>
                                 </div>
                             </div>
-                            <div class="pt-2">
-                                <button type="submit" class="w-full bg-secondary text-white py-4 rounded-xl hover:bg-opacity-90 transition-all font-medium text-lg shadow-lg">
-                                    <i class="fas fa-paper-plane ml-2"></i>שליחה
-                                </button>
-                            </div>
-                            <p class="text-white/80 text-xs text-center">* השארת פרטים אינה מהווה התחייבות. אנו מכבדים את פרטיותך ולא נעביר את המידע לגורם שלישי.</p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- סקציית שאלות נפוצות -->
-    <section class="py-20 md:py-32 bg-white animate-on-scroll" data-animation-type="fade-in">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16 animate-on-scroll" data-animation-type="fade-in-up">
-                <span class="inline-block py-1 px-4 rounded-full bg-primary/10 text-primary font-medium text-sm mb-4">שאלות נפוצות</span>
-                <h2 class="text-3xl md:text-4xl font-bold">תשובות לשאלות הנפוצות ביותר</h2>
-                <p class="mt-4 text-gray-600 max-w-3xl mx-auto">מקבץ השאלות הנפוצות ביותר שאנו מקבלים מלקוחותינו</p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto" id="faqContainer">
-                <!-- שאלה 1 -->
-                <div class="mb-6 bg-gray-50 rounded-2xl overflow-hidden shadow-md faq-item animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="100">
-                    <div class="p-6 cursor-pointer flex justify-between items-center faq-header">
-                        <h3 class="font-bold text-lg">מי זכאי לקבל רישיון קנאביס רפואי?</h3>
-                        <i class="fas fa-chevron-down text-primary transition-all transform"></i>
-                    </div>
-                    <div class="p-6 pt-0 text-gray-700 faq-content hidden">
-                        <p>כל אדם הסובל ממצב רפואי כרוני כגון כאבים, PTSD, מחלת קרוהן, מצבים נוירולוגיים, סרטן ועוד רבים אחרים עשוי להיות זכאי. הזכאות נקבעת על ידי רופא מוסמך שיבחן את ההיסטוריה הרפואית שלך ואת המצב הנוכחי. אנחנו נעזור לך לברר את הזכאות ולהשיג את כל המסמכים הנדרשים.</p>
-                    </div>
-                </div>
-                
-                <!-- שאלה 2 -->
-                <div class="mb-6 bg-gray-50 rounded-2xl overflow-hidden shadow-md faq-item animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="200">
-                    <div class="p-6 cursor-pointer flex justify-between items-center faq-header">
-                        <h3 class="font-bold text-lg">כמה זמן לוקח לקבל רישיון?</h3>
-                        <i class="fas fa-chevron-down text-primary transition-all transform"></i>
-                    </div>
-                    <div class="p-6 pt-0 text-gray-700 faq-content hidden">
-                        <p>בפרידום מדיקל, תהליך קבלת הרישיון יכול להימשך בין שבוע לשלושה שבועות, תלוי במורכבות התיק הרפואי והמצב האישי שלך. אנחנו עובדים במהירות האפשרית כדי לקצר את התהליך ולהבטיח שתקבל את הרישיון בזמן הקצר ביותר.</p>
-                    </div>
-                </div>
-                
-                <!-- שאלה 3 -->
-                <div class="mb-6 bg-gray-50 rounded-2xl overflow-hidden shadow-md faq-item animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="300">
-                    <div class="p-6 cursor-pointer flex justify-between items-center faq-header">
-                        <h3 class="font-bold text-lg">האם אפשר לנסוע עם קנאביס רפואי לחו"ל?</h3>
-                        <i class="fas fa-chevron-down text-primary transition-all transform"></i>
-                    </div>
-                    <div class="p-6 pt-0 text-gray-700 faq-content hidden">
-                        <p>כן, ישנה אפשרות לנסוע עם קנאביס רפואי לחו"ל, אך זה תלוי בחוקים של המדינה אליה אתה נוסע. פרידום מדיקל מספקת שירות ייחודי שעוזר למטופלים להשיג רישיון מיוחד ואישורים הנדרשים לנסיעות לחו"ל. אנו נדריך אותך בכל התהליך ונוודא שיש לך את כל המסמכים הנדרשים.</p>
-                    </div>
-                </div>
-                
-                <!-- שאלה 4 -->
-                <div class="mb-6 bg-gray-50 rounded-2xl overflow-hidden shadow-md faq-item animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="400">
-                    <div class="p-6 cursor-pointer flex justify-between items-center faq-header">
-                        <h3 class="font-bold text-lg">מהם היתרונות של טיפול בקנאביס רפואי?</h3>
-                        <i class="fas fa-chevron-down text-primary transition-all transform"></i>
-                    </div>
-                    <div class="p-6 pt-0 text-gray-700 faq-content hidden">
-                        <p>קנאביס רפואי מציע הקלה למגוון רחב של מצבים רפואיים כולל כאב כרוני, חרדה, דלקות, בעיות שינה, בחילות, התכווצויות שרירים ועוד. היתרונות כוללים שיפור באיכות החיים, הפחתת כאבים ללא תופעות הלוואי החמורות של תרופות מרשם מסורתיות, ושיפור בתפקוד היומיומי.</p>
-                    </div>
-                </div>
-                
-                <!-- שאלה 5 -->
-                <div class="mb-6 bg-gray-50 rounded-2xl overflow-hidden shadow-md faq-item animate-on-scroll" data-animation-type="fade-in-up" data-animation-delay="500">
-                    <div class="p-6 cursor-pointer flex justify-between items-center faq-header">
-                        <h3 class="font-bold text-lg">איך מתבצע תהליך חידוש הרישיון?</h3>
-                        <i class="fas fa-chevron-down text-primary transition-all transform"></i>
-                    </div>
-                    <div class="p-6 pt-0 text-gray-700 faq-content hidden">
-                        <p>תהליך חידוש הרישיון פשוט יותר מהוצאת רישיון חדש. יש להתחיל את התהליך כחודש לפני תום תוקף הרישיון הנוכחי. אנחנו נדאג לתאם עבורך פגישה עם רופא, נעזור לך להכין את כל המסמכים הרפואיים העדכניים ונגיש את הבקשה לחידוש. תשלום מתבצע רק לאחר קבלת הרישיון המחודש.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- פוטר -->
-    <footer class="bg-dark text-white pt-20 pb-6">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-10 pb-10">
-                <!-- לוגו ומידע -->
-                <div class="md:col-span-1">
-                    <div class="flex items-center gap-3 mb-6">
-                        <img src="https://i.ibb.co/ynhMr6bs/9693bc10-162c-40d9-bc17-445ce64100df-removebg-preview.png" alt="פרידום מדיקל לוגו" class="h-16 md:h-20">
-                        <span class="font-bold text-xl">פרידום מדיקל</span>
-                    </div>
-                    <p class="text-white/70 mb-6">המרכז הישראלי המוביל לקאנביס רפואי. מלווים אותך בכל צעד בדרך לאיכות חיים טובה יותר.</p>
-                    <div class="flex gap-4">
-                        <a href="#" class="bg-white/10 hover:bg-primary p-2 rounded-full transition-all">
-                            <i class="fab fa-facebook-f text-white"></i>
-                        </a>
-                        <a href="#" class="bg-white/10 hover:bg-primary p-2 rounded-full transition-all">
-                            <i class="fab fa-instagram text-white"></i>
-                        </a>
-                        <a href="https://wa.me/972559835789" class="bg-white/10 hover:bg-primary p-2 rounded-full transition-all">
-                            <i class="fab fa-whatsapp text-white"></i>
-                        </a>
-                        <a href="https://t.me/+9720506821618" class="bg-white/10 hover:bg-primary p-2 rounded-full transition-all">
-                            <i class="fab fa-telegram text-white"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- קישורים מהירים -->
-                <div>
-                    <h4 class="font-bold text-lg mb-6">קישורים מהירים</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#home" class="text-white/70 hover:text-white transition-colors">בית</a></li>
-                        <li><a href="#services" class="text-white/70 hover:text-white transition-colors">שירותים</a></li>
-                        <li><a href="#testimonials" class="text-white/70 hover:text-white transition-colors">המלצות</a></li>
-                        <li><a href="#contact" class="text-white/70 hover:text-white transition-colors">צור קשר</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">מדיניות פרטיות</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">תנאי שימוש</a></li>
-                    </ul>
-                </div>
-                
-                <!-- השירותים שלנו -->
-                <div>
-                    <h4 class="font-bold text-lg mb-6">השירותים שלנו</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">רישיון קנאביס חדש</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">חידוש רישיון</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">הגדלת מינון</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">רישיון לנסיעות לחו"ל</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">ייעוץ רפואי</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition-colors">ליווי מקצועי</a></li>
-                    </ul>
-                </div>
-                
-                <!-- שעות פעילות -->
-                <div>
-                    <h4 class="font-bold text-lg mb-6">שעות פעילות</h4>
-                    <ul class="space-y-3">
-                        <li class="flex justify-between">
-                            <span class="text-white/70">ראשון - חמישי:</span>
-                            <span>9:00 - 20:00</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span class="text-white/70">שישי:</span>
-                            <span>9:00 - 13:00</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span class="text-white/70">שבת:</span>
-                            <span>סגור</span>
-                        </li>
-                    </ul>
-                    <div class="mt-6 bg-white/5 p-4 rounded-xl">
-                        <h5 class="font-medium mb-2">התקשרו עכשיו</h5>
-                        <a href="https://wa.me/972559835789" target="_blank" rel="noopener noreferrer" class="text-secondary font-bold text-xl hover:underline flex items-center">
-                            <i class="fab fa-whatsapp mr-2"></i>
-                            0559835789
-                        </a>
+                            <div id="spouseEmploymentContainer" class="hidden space-y-4 mt-4">
+                                <div>
+                                    <label for="spouseCompanyName" class="block text-gray-800 mb-2">שם החברה *</label>
+                                    <input type="text" id="spouseCompanyName" placeholder="שם החברה"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                                <div>
+                                    <label for="spouseJobTitle" class="block text-gray-800 mb-2">מה התפקיד? *</label>
+                                    <input type="text" id="spouseJobTitle" placeholder="תפקיד"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                                <div>
+                                    <label for="spouseJobStartDate" class="block text-gray-800 mb-2">תאריך תחילת עבודה
+                                        *</label>
+                                    <input type="date" id="spouseJobStartDate"
+                                        class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="spouseNetSalary" class="block text-gray-800 mb-2">כמה מרוויח/ה נטו? (בשקלים)
+                                    *</label>
+                                <input type="number" id="spouseNetSalary" min="0" placeholder="לדוגמה: 7000"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                        </div>
+
+                        <!-- תלושי שכר -->
+                        <div class="border-4 border-dashed border-green-300 rounded-2xl p-6 bg-green-50 mt-6">
+                            <div class="file-instruction">
+                                📄 יש להעלות: 3 תלושי שכר אחרונים שלך
+                                <span id="spouseSalaryInstruction" class="hidden"> + תלושי שכר של בן/בת הזוג</span>
+                            </div>
+                            <label for="salarySlipsFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת תלושי
+                                שכר *</label>
+                            <input type="file" id="salarySlipsFiles" multiple accept="image/*,application/pdf"
+                                class="hidden" required>
+                            <button type="button" onclick="document.getElementById('salarySlipsFiles').click()"
+                                class="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                בחר קבצים
+                            </button>
+                            <p class="text-gray-600 mt-3 text-base text-center">ניתן לבחור מספר קבצים (3+ תלושים)</p>
+                            <div id="salarySlipsFilesPreview" class="mt-3"></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            
-            <!-- קו הפרדה -->
-            <div class="border-t border-white/10 pt-6 mt-6">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-white/50 text-sm mb-4 md:mb-0">© 2025 פרידום מדיקל. כל הזכויות שמורות.</p>
-                    <p class="text-white/50 text-sm">עוצב ופותח על ידי <span class="text-secondary">נאור בר ציון</span></p>
+
+            <!-- ========== שלב 3: הכנסות + השכלה + רכב + בנק ========== -->
+            <div class="step-container" data-step="3">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4"></path>
+                            <path d="M12 8h.01"></path>
+                        </svg>
+                        פרטים נוספים
+                    </h2>
+
+                    <div class="space-y-6">
+                        <!-- הכנסות נוספות -->
+                        <h3 class="text-2xl font-bold text-purple-600 border-b-2 border-purple-300 pb-2">💰 הכנסות
+                            נוספות</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם ישנן הכנסות נוספות?</label>
+                            <div class="space-y-3">
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="קצבאות ביטוח לאומי"
+                                        class="w-6 h-6">
+                                    <span class="text-lg">קצבאות ביטוח לאומי</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="פנסיה" class="w-6 h-6">
+                                    <span class="text-lg">פנסיה</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="סיוע בשכר דירה"
+                                        class="w-6 h-6">
+                                    <span class="text-lg">סיוע בשכר דירה</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-xl hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="additionalIncome" value="מזונות" class="w-6 h-6">
+                                    <span class="text-lg">מזונות</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- השכלה -->
+                        <h3 class="text-2xl font-bold text-blue-600 border-b-2 border-blue-300 pb-2 mt-8">🎓 השכלה</h3>
+
+                        <div>
+                            <label for="yearsOfStudy" class="block text-gray-800 mb-2">כמה שנות לימוד? *</label>
+                            <input type="number" id="yearsOfStudy" required min="0" max="30" placeholder="לדוגמה: 12"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש בגרות? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasBagrut" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasBagrut" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש מקצוע עם תעודה? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasProfession" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasProfession" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש תארים? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasDegree" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasDegree" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- רכב -->
+                        <h3 class="text-2xl font-bold text-red-600 border-b-2 border-red-300 pb-2 mt-8">🚗 רכב</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש רכב בבעלות? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                    <input type="radio" name="hasCar" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                    <input type="radio" name="hasCar" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="carDetailsContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="carLicenseNumber" class="block text-gray-800 mb-2">מספר רישוי *</label>
+                                <input type="text" id="carLicenseNumber" placeholder="מספר רישוי"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="carYear" class="block text-gray-800 mb-2">שנת עלייה לכביש *</label>
+                                <input type="number" id="carYear" min="1950" max="2025" placeholder="לדוגמה: 2018"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="carType" class="block text-gray-800 mb-2">סוג הרכב *</label>
+                                <input type="text" id="carType" placeholder="לדוגמה: טויוטה קורולה"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 mb-3">האם הרכב משועבד? *</label>
+                                <div class="flex gap-4">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                        <input type="radio" name="carPledged" value="כן" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">כן</span>
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-red-50 transition flex-1">
+                                        <input type="radio" name="carPledged" value="לא" class="w-6 h-6">
+                                        <span class="text-xl font-semibold">לא</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="carPledgeContainer" class="hidden">
+                                <label for="carPledgeTo" class="block text-gray-800 mb-2">משועבד לטובת מי? *</label>
+                                <input type="text" id="carPledgeTo" placeholder="שם הגוף"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+
+                            <div class="border-4 border-dashed border-red-300 rounded-2xl p-6 bg-red-50">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: צילום רישיון רכב
+                                </div>
+                                <label for="carLicenseFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת
+                                    רישיון רכב *</label>
+                                <input type="file" id="carLicenseFiles" multiple accept="image/*,application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('carLicenseFiles').click()"
+                                    class="bg-red-600 hover:bg-red-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים
+                                </button>
+                                <div id="carLicenseFilesPreview" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- חשבון בנק -->
+                        <h3 class="text-2xl font-bold text-indigo-600 border-b-2 border-indigo-300 pb-2 mt-8">🏦 חשבון
+                            בנק</h3>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3">האם יש חשבון בנק פעיל? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-indigo-50 transition flex-1">
+                                    <input type="radio" name="hasBankAccount" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-300 rounded-xl hover:bg-indigo-50 transition flex-1">
+                                    <input type="radio" name="hasBankAccount" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="bankDetailsContainer" class="hidden space-y-4">
+                            <div>
+                                <label for="bankName" class="block text-gray-800 mb-2">שם הבנק *</label>
+                                <input type="text" id="bankName" placeholder="לדוגמה: לאומי"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="bankBranch" class="block text-gray-800 mb-2">מספר סניף *</label>
+                                <input type="text" id="bankBranch" placeholder="לדוגמה: 789"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+                            <div>
+                                <label for="bankAccount" class="block text-gray-800 mb-2">מספר חשבון *</label>
+                                <input type="text" id="bankAccount" placeholder="מספר חשבון"
+                                    class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition">
+                            </div>
+
+                            <div class="border-4 border-dashed border-indigo-300 rounded-2xl p-6 bg-indigo-50">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: תדפיס בנק 3 חודשים אחרונים בקובץ PDF
+                                </div>
+                                <label for="bankStatementFiles" class="block text-gray-800 mb-3 text-xl font-bold">העלאת
+                                    תדפיס בנק *</label>
+                                <input type="file" id="bankStatementFiles" multiple accept="application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('bankStatementFiles').click()"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים (PDF)
+                                </button>
+                                <div id="bankStatementFilesPreview" class="mt-3"></div>
+                            </div>
+
+                            <div class="border-4 border-dashed border-indigo-300 rounded-2xl p-6 bg-indigo-50 mt-4">
+                                <div class="file-instruction">
+                                    📄 יש להעלות: ריכוז יתרות בקובץ PDF
+                                </div>
+                                <label for="balanceSummaryFiles"
+                                    class="block text-gray-800 mb-3 text-xl font-bold">העלאת ריכוז יתרות *</label>
+                                <input type="file" id="balanceSummaryFiles" multiple accept="application/pdf"
+                                    class="hidden">
+                                <button type="button" onclick="document.getElementById('balanceSummaryFiles').click()"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-bold py-4 px-8 rounded-xl transition shadow-lg w-full">
+                                    בחר קבצים (PDF)
+                                </button>
+                                <div id="balanceSummaryFilesPreview" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+
+            <!-- ========== שלב 4: חובות וחו"ל ========== -->
+            <div class="step-container" data-step="4">
+                <div class="glass rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <path d="M12 17h.01"></path>
+                        </svg>
+                        שאלות אחרונות
+                    </h2>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-gray-800 mb-3 text-xl">האם יש לך חובות למרכז קנסות בגין דוחות
+                                משטרה? *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasTrafficDebts" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="hasTrafficDebts" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-800 mb-3 text-xl">האם היית בחו"ל בחמש השנים האחרונות?
+                                *</label>
+                            <div class="flex gap-4">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="traveledAbroad" value="כן" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">כן</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer p-5 border-2 border-gray-300 rounded-xl hover:bg-blue-50 transition flex-1">
+                                    <input type="radio" name="traveledAbroad" value="לא" required class="w-6 h-6">
+                                    <span class="text-xl font-semibold">לא</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="travelDestinationsContainer" class="hidden">
+                            <label for="travelDestinations" class="block text-gray-800 mb-2 text-xl">איפה? *</label>
+                            <textarea id="travelDestinations" rows="4" placeholder="לדוגמה: טורקיה, יוון, איטליה"
+                                class="w-full rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none transition"></textarea>
+                            <p class="text-gray-500 text-base mt-1">ניתן לרשום מספר יעדים</p>
+                        </div>
+
+                        <div class="bg-green-100 border-2 border-green-500 rounded-2xl p-6 mt-8 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="mx-auto mb-3 text-green-600">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <h3 class="text-2xl font-bold text-green-700 mb-2">כמעט סיימנו!</h3>
+                            <p class="text-lg text-green-600">לחץ על "שלח טופס" למטה כדי לסיים</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- Navigation Buttons -->
+        <div class="flex gap-4 mt-6 mb-8">
+            <button type="button" id="prevBtn" onclick="changeStep(-1)"
+                class="flex-1 bg-gray-500 hover:bg-gray-600 text-white text-xl font-bold py-5 rounded-2xl transition shadow-lg flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                חזור
+            </button>
+            <button type="button" id="nextBtn" onclick="changeStep(1)"
+                class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xl font-bold py-5 rounded-2xl transition shadow-lg flex items-center justify-center gap-3">
+                הבא
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
         </div>
-    </footer>
-    
-    <!-- נגישות -->
-    <div class="fixed bottom-6 left-6 bg-primary text-white p-3 rounded-full shadow-lg z-50 cursor-pointer hover:bg-opacity-90 transition-all">
-        <i class="fas fa-universal-access text-xl"></i>
+
+        <!-- Status Message -->
+        <div id="statusMessage" class="hidden glass rounded-2xl p-6 text-center text-xl font-bold shadow-xl"></div>
+
     </div>
-    
-    <!-- וואטסאפ -->
-    <a href="https://wa.me/972559835789" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 bg-[#25D366] text-white p-3 rounded-full shadow-lg z-50 cursor-pointer hover:bg-opacity-90 transition-all scale-hover">
-        <i class="fab fa-whatsapp text-xl"></i>
-    </a>
 
-    <!-- JavaScript -->
     <script src="script.js"></script>
-    
-    <script>
-        // קוד להצגת רשימת הקבצים שהועלו
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileUpload = document.getElementById('fileUpload');
-            const selectedFiles = document.getElementById('selectedFiles');
-            const fileList = document.getElementById('fileList');
-            
-            // מערך לאחסון כל הקבצים שהועלו
-            let uploadedFiles = [];
-            
-            // יצירת המודלים
-            createModals();
-            
-            if (fileUpload) {
-                fileUpload.addEventListener('change', function() {
-                    // הוספת הקבצים החדשים למערך במקום למחוק את הקיימים
-                    const newFiles = Array.from(this.files);
-                    
-                    // הוספת הקבצים החדשים למערך הקבצים הקיימים
-                    newFiles.forEach(file => {
-                        // בדיקה שהקובץ לא קיים כבר במערך (לפי שם)
-                        const fileExists = uploadedFiles.some(existingFile => 
-                            existingFile.name === file.name && existingFile.size === file.size
-                        );
-                        
-                        if (!fileExists) {
-                            uploadedFiles.push(file);
-                        }
-                    });
-                    
-                    // ניקוי הקובץ הנוכחי מה-input כדי לאפשר העלאה חוזרת של אותו קובץ
-                    this.value = '';
-                    
-                    // עדכון התצוגה של הקבצים
-                    updateFileList();
-                });
-                
-                // פונקציה לעדכון תצוגת רשימת הקבצים
-                function updateFileList() {
-                    // ניקוי הרשימה הקיימת
-                    fileList.innerHTML = '';
-                    
-                    if (uploadedFiles.length > 0) {
-                        selectedFiles.classList.remove('hidden');
-                        
-                        // עדכון מונה הקבצים
-                        document.getElementById('filesCounter').textContent = uploadedFiles.length + (uploadedFiles.length === 1 ? ' קובץ' : ' קבצים');
-                        
-                        // הוספת כל הקבצים לרשימה
-                        uploadedFiles.forEach(file => {
-                            const fileSize = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB
-                            const listItem = document.createElement('li');
-                            listItem.className = 'flex justify-between items-center bg-white/10 rounded-lg p-2 transition-all transform hover:bg-white/15 mb-2';
-                            
-                            // קביעת צבע וסמל לסוג הקובץ
-                            let fileIcon = 'fa-file';
-                            let fileColorClass = 'text-blue-300';
-                            let isImage = false;
-                            
-                            if (file.name.match(/\.(jpg|jpeg|png|gif|bmp|svg)$/i)) {
-                                fileIcon = 'fa-file-image';
-                                fileColorClass = 'text-purple-300';
-                                isImage = true;
-                            } else if (file.name.match(/\.(pdf)$/i)) {
-                                fileIcon = 'fa-file-pdf';
-                                fileColorClass = 'text-red-300';
-                            } else if (file.name.match(/\.(doc|docx)$/i)) {
-                                fileIcon = 'fa-file-word';
-                                fileColorClass = 'text-blue-300';
-                            }
-                            
-                            // בדיקה אם יש הערה קיימת לקובץ
-                            const existingNote = localStorage.getItem('note_' + file.name);
-                            const hasNote = existingNote && existingNote.trim() !== '';
-                            
-                            // הצגת שם הקובץ, גודלו וההערה אם קיימת
-                            listItem.innerHTML = `
-                                <div class="flex items-center flex-1 overflow-hidden ${isImage ? 'cursor-pointer preview-image' : ''}" ${isImage ? 'data-file-name="' + file.name + '"' : ''}>
-                                    <i class="fas ${fileIcon} ${fileColorClass} ml-2 text-base"></i>
-                                    <div class="flex flex-col overflow-hidden">
-                                        <span class="truncate max-w-[200px] font-medium">${file.name}</span>
-                                        <div class="flex items-center">
-                                            <span class="text-white/60 text-xs">${fileSize} MB</span>
-                                            ${hasNote ? `<span class="text-yellow-300 text-xs mr-2 max-w-[150px] truncate"><i class="fas fa-sticky-note mr-1"></i>${existingNote}</span>` : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <button class="note-file-btn ${hasNote ? 'bg-yellow-500/50' : 'bg-white/20'} hover:bg-yellow-500/50 rounded-full p-1.5 ml-2 transition-all duration-200 flex items-center justify-center" data-file-name="${file.name}" title="${hasNote ? 'ערוך הערה' : 'הוסף הערה'}">
-                                        <i class="fas fa-comment text-white text-xs"></i>
-                                    </button>
-                                    <button class="delete-file-btn bg-white/20 hover:bg-red-500/50 rounded-full p-1.5 transition-all duration-200 flex items-center justify-center" data-file-name="${file.name}" title="הסר קובץ">
-                                        <i class="fas fa-times text-white text-xs"></i>
-                                    </button>
-                                </div>
-                            `;
-                            
-                            // הוספת אנימציה של fade-in לפריט החדש
-                            listItem.style.opacity = '0';
-                            fileList.appendChild(listItem);
-                            
-                            // הפעלת אנימציית fade-in
-                            setTimeout(() => {
-                                listItem.style.opacity = '1';
-                                listItem.style.transition = 'opacity 0.3s ease';
-                            }, 10);
-                        });
-                        
-                        // הוספת מאזינים לכפתורי המחיקה
-                        document.querySelectorAll('.delete-file-btn').forEach(button => {
-                            button.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                
-                                // שומרים הפנייה לאלמנט הרשימה כדי להפעיל אנימציית fade-out
-                                const listItem = this.closest('li');
-                                const fileName = this.getAttribute('data-file-name');
-                                
-                                // אנימציית fade-out לפני ההסרה
-                                listItem.style.opacity = '0';
-                                
-                                setTimeout(() => {
-                                    removeFileFromSelection(fileName);
-                                }, 300);
-                            });
-                        });
-                        
-                        // הוספת מאזינים לכפתורי ההערות
-                        document.querySelectorAll('.note-file-btn').forEach(button => {
-                            button.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                const fileName = this.getAttribute('data-file-name');
-                                openNoteModal(fileName);
-                            });
-                        });
-                        
-                        // הוספת מאזינים לתמונות לתצוגה מקדימה
-                        document.querySelectorAll('.preview-image').forEach(element => {
-                            element.addEventListener('click', function() {
-                                const fileName = this.getAttribute('data-file-name');
-                                openImagePreview(fileName, uploadedFiles);
-                            });
-                        });
-                    } else {
-                        selectedFiles.classList.add('hidden');
-                    }
-                }
-            }
-            
-            // פונקציה להסרת קובץ מהרשימה
-            function removeFileFromSelection(fileName) {
-                // הסרת הקובץ מהמערך
-                uploadedFiles = uploadedFiles.filter(file => file.name !== fileName);
-                
-                // עדכון התצוגה
-                updateFileList();
-                
-                // הסרת ההערה המשויכת לקובץ, אם קיימת
-                localStorage.removeItem('note_' + fileName);
-            }
-            
-            // יצירת המודלים באופן דינמי
-            function createModals() {
-                // מודל לתצוגה מקדימה של תמונה
-                if (!document.getElementById('imagePreviewModal')) {
-                    const imageModal = document.createElement('div');
-                    imageModal.id = 'imagePreviewModal';
-                    imageModal.className = 'fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4';
-                    imageModal.innerHTML = `
-                        <div class="relative max-w-3xl w-full bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                            <button id="closeImagePreview" class="absolute top-2 right-2 text-white bg-white/10 hover:bg-red-500/50 rounded-full p-2 transition-all">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <div class="text-center mb-4">
-                                <h3 class="text-white text-xl font-bold" id="previewFileName">שם הקובץ</h3>
-                            </div>
-                            <img id="previewImage" src="" alt="תצוגה מקדימה" class="w-full h-auto max-h-[70vh] object-contain rounded-lg">
-                        </div>
-                    `;
-                    document.body.appendChild(imageModal);
-                }
-                
-                // מודל להוספת הערה לקובץ
-                if (!document.getElementById('noteModal')) {
-                    const noteModal = document.createElement('div');
-                    noteModal.id = 'noteModal';
-                    noteModal.className = 'fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4';
-                    noteModal.innerHTML = `
-                        <div class="relative max-w-md w-full bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                            <button id="closeNoteModal" class="absolute top-2 right-2 text-white bg-white/10 hover:bg-red-500/50 rounded-full p-2 transition-all">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <div class="text-center mb-4">
-                                <h3 class="text-white text-xl font-bold">הוסף הערה לקובץ</h3>
-                                <p class="text-white/70 text-sm" id="noteFileName">שם הקובץ</p>
-                            </div>
-                            <textarea id="fileNote" class="w-full bg-white/20 border border-white/30 rounded-lg p-3 mb-4 text-white text-right" placeholder="הזן את ההערה שלך כאן..." rows="4"></textarea>
-                            <div class="flex justify-center">
-                                <button id="saveNote" class="bg-secondary text-white py-2 px-6 rounded-lg hover:bg-opacity-90 transition-all font-medium">
-                                    <i class="fas fa-save ml-2"></i>שמור הערה
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(noteModal);
-                }
-                
-                // הוספת מאזינים לכפתורי הסגירה
-                setupModalListeners();
-            }
-            
-            // הגדרת המאזינים למודלים
-            function setupModalListeners() {
-                // סגירת מודל תצוגה מקדימה
-                document.getElementById('closeImagePreview')?.addEventListener('click', function() {
-                    const modal = document.getElementById('imagePreviewModal');
-                    modal.style.display = 'none';
-                    modal.classList.add('hidden');
-                });
-                
-                // סגירת מודל הערות
-                document.getElementById('closeNoteModal')?.addEventListener('click', function() {
-                    const modal = document.getElementById('noteModal');
-                    modal.style.display = 'none';
-                    modal.classList.add('hidden');
-                });
-                
-                // שמירת הערה
-                document.getElementById('saveNote')?.addEventListener('click', function() {
-                    const noteFileName = document.getElementById('noteFileName');
-                    const fileNote = document.getElementById('fileNote');
-                    
-                    if (noteFileName && fileNote) {
-                        // שמירת ההערה ב-localStorage
-                        localStorage.setItem('note_' + noteFileName.textContent, fileNote.value);
-                        
-                        // סגירת המודל
-                        const modal = document.getElementById('noteModal');
-                        modal.style.display = 'none';
-                        modal.classList.add('hidden');
-                        
-                        // עדכון התצוגה של הקבצים
-                        updateFileList();
-                    }
-                });
-            }
-            
-            // פונקציה לפתיחת חלון ההערות
-            function openNoteModal(fileName) {
-                const noteModal = document.getElementById('noteModal');
-                const noteFileName = document.getElementById('noteFileName');
-                const fileNote = document.getElementById('fileNote');
-                
-                if (noteModal && noteFileName) {
-                    noteFileName.textContent = fileName;
-                    
-                    // בדיקה אם יש הערה קיימת
-                    const existingNote = localStorage.getItem('note_' + fileName);
-                    if (existingNote && fileNote) {
-                        fileNote.value = existingNote;
-                    } else if (fileNote) {
-                        fileNote.value = '';
-                    }
-                    
-                    noteModal.style.display = 'flex';
-                    noteModal.classList.remove('hidden');
-                }
-            }
-            
-            // פונקציה לפתיחת תצוגה מקדימה של תמונה
-            function openImagePreview(fileName, files) {
-                const imagePreviewModal = document.getElementById('imagePreviewModal');
-                const previewImage = document.getElementById('previewImage');
-                const previewFileName = document.getElementById('previewFileName');
-                
-                if (imagePreviewModal && previewImage && previewFileName) {
-                    // מציאת הקובץ המתאים מהרשימה
-                    const file = files.find(f => f.name === fileName);
-                    
-                    if (file && file.type.match(/image.*/)) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            previewImage.src = e.target.result;
-                            previewFileName.textContent = fileName;
-                            imagePreviewModal.style.display = 'flex';
-                            imagePreviewModal.classList.remove('hidden');
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            }
-        });
-    </script>
-    
-    <script>
-        // קוד להצגת תצוגה מקדימה של תמונה
-        document.addEventListener('DOMContentLoaded', function() {
-            const previewImage = document.getElementById('previewImage');
-            const previewFileName = document.getElementById('previewFileName');
-            const previewModal = document.getElementById('imagePreviewModal');
-            const closePreview = document.getElementById('closeImagePreview');
-            
-            if (previewImage) {
-                previewImage.addEventListener('click', function() {
-                    previewFileName.textContent = this.getAttribute('data-file-name');
-                    previewModal.classList.remove('hidden');
-                });
-            }
-            
-            if (closePreview) {
-                closePreview.addEventListener('click', function() {
-                    previewModal.classList.add('hidden');
-                });
-            }
-        });
-    </script>
-    
-    <script>
-        // קוד להוספת הערה לקובץ
-        document.addEventListener('DOMContentLoaded', function() {
-            const noteFileName = document.getElementById('noteFileName');
-            const fileNote = document.getElementById('fileNote');
-            const noteModal = document.getElementById('noteModal');
-            const closeNoteModal = document.getElementById('closeNoteModal');
-            const saveNote = document.getElementById('saveNote');
-            
-            if (noteFileName) {
-                noteFileName.textContent = this.getAttribute('data-file-name');
-            }
-            
-            if (fileNote) {
-                fileNote.addEventListener('input', function() {
-                    noteFileName.textContent = this.value;
-                });
-            }
-            
-            if (noteModal) {
-                noteModal.addEventListener('click', function() {
-                    this.classList.add('hidden');
-                });
-            }
-            
-            if (closeNoteModal) {
-                closeNoteModal.addEventListener('click', function() {
-                    this.closest('.modal').classList.add('hidden');
-                });
-            }
-            
-            if (saveNote) {
-                saveNote.addEventListener('click', function() {
-                    // פונקציה להגדלת הערה
-                    addNoteToFile(noteFileName.textContent, fileNote.value);
-                    this.closest('.modal').classList.add('hidden');
-                });
-            }
-        });
-    </script>
+
 </body>
-</html> 
+
+</html>
