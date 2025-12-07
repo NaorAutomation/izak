@@ -844,6 +844,9 @@
             bankStatement: [],
             balanceSummary: []
         };
+        
+        // 🔒 Security Token (יוחלף על ידי Apps Script)
+        const SECURITY_TOKEN = '{{SECRET_TOKEN}}';
 
         // ========== Initialize ==========
         document.addEventListener('DOMContentLoaded', () => {
@@ -1142,6 +1145,7 @@
             for (const category in allFilesData) allFiles.push(...allFilesData[category]);
 
             const formData = {
+                securityToken: SECURITY_TOKEN,
                 fullName: document.getElementById('fullName').value,
                 idNumber: document.getElementById('idNumber').value,
                 birthDate: document.getElementById('birthDate').value,
@@ -1192,7 +1196,7 @@
             };
 
             try {
-                // URL יוחלף אוטומטית על ידי Apps Script מ-GitHub
+                // URL יוחלף על ידי Apps Script
                 await fetch('{{SCRIPT_URL}}', {
                     method: 'POST',
                     mode: 'no-cors',
